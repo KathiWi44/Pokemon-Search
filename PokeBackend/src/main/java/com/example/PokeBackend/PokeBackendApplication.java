@@ -1,4 +1,4 @@
-package org.example.PokeBackend;
+package com.example.PokeBackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

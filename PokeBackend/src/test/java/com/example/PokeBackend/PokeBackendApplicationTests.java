@@ -1,4 +1,4 @@
-package org.example.PokeBackend;
+package com.example.PokeBackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

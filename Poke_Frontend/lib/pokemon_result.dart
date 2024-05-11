@@ -58,7 +58,9 @@ class PokemonResult extends StatelessWidget {
   }
 
   Future<PokemonData> fetchPokemonData(String name) async {
-    final response = await http.get(Uri.parse('http://localhost:8080/pokemon/$name'));
+    final ipAddress = '127.0.0.1';
+    final port = 8080;
+    final response = await http.get(Uri.parse('http://$ipAddress:$port/pokemon/$name'));
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);

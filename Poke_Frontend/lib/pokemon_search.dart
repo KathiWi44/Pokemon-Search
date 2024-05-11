@@ -16,7 +16,7 @@ class _PokemonSearchState extends State<PokemonSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Whos that Pokemon?'),
+        title: Text('Whos that Pokémon?'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,7 +24,7 @@ class _PokemonSearchState extends State<PokemonSearch> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Enter the name of the Pokemon:',
+              'Enter the name of the Pokémon:',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
@@ -40,11 +40,12 @@ class _PokemonSearchState extends State<PokemonSearch> {
             ElevatedButton(
               onPressed: () {
                 String pokemonName = _controller.text.trim();
-                if (pokemonName.isEmpty) {
+                if (!inputValidation(pokemonName)) {
                   setState(() {
-                    _errorMessage = 'Please enter the name of a Pokemon!';
+                    _errorMessage = 'Please enter the name of a Pokémon!';
                   });
                 } else {
+                  String sanitizedName = sanitizeInput(pokemonName);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PokemonResult(pokemonName: pokemonName)),
@@ -57,6 +58,14 @@ class _PokemonSearchState extends State<PokemonSearch> {
         ),
       ),
     );
+  }
+
+  bool inputValidation(String name) {
+    return name.isNotEmpty && RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(name);
+  }
+
+  String sanitizeInput(String input) {
+    return input.replaceAll(RegExp(r'[^\w\s]+'), '');
   }
 
   @override

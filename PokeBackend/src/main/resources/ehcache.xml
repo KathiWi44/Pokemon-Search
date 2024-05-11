@@ -1,0 +1,10 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <cache name="pokemonCache"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           timeToLiveSeconds="3600" />
+
+</ehcache>

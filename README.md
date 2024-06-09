@@ -1,6 +1,6 @@
 # PokeSearch
 
-## Introduction and Goals
+## Einführung und Ziele {#section-introduction-and-goals}
 
 Das Geschäftsziel von PokeSearch besteht darin, eine intuitive Plattform für Pokémon-Enthusiasten bereitzustellen, mit der sie detaillierte Informationen über verschiedene Pokémon erhalten können. Hierfür sollen die Nutzer den Namen eines Pokémons suchen und die gewünschten Informationen erhalten. Durch die Nutzung der PokeAPI v2 zielt PokeSearch darauf ab, ein ansprechendes Benutzererlebnis zu bieten, das sowohl die Bedürfnisse von Gelegenheitsnutzern als auch von eingefleischten Pokémon-Fans erfüllt. Das Projekt strebt zudem an, die Reichweite und das Engagement der Pokémon-Community durch eine moderne, webbasierte Schnittstelle zu erweitern.
 
@@ -26,958 +26,983 @@ In den Lebenszyklus der Software, sind folgende Stakeholder eingebunden, mit ihr
 -   **Entwickler**: Das Entwicklungsteam, das für den Aufbau und die Wartung der Anwendung verantwortlich ist, und eine wartbare und gut dokumentierte Codebasis benötigt.
 -   **API-Anbieter**: Das Team hinter der PokeAPI, das eine verantwortungsvolle und effiziente Nutzung ihres Dienstes erwartet.
 
-### Requirements Overview {#_requirements_overview}
+### Aufgabenstellung {#_aufgabenstellung}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Short description of the functional requirements, driving forces,
-extract (or abstract) of requirements. Link to (hopefully existing)
-requirements documents (with version number and information where to
-find it).
-
-::: formalpara-title
-**Motivation**
-:::
-
-From the point of view of the end users a system is created or modified
-to improve support of a business activity and/or improve the quality.
-
-::: formalpara-title
-**Form**
-:::
-
-Short textual description, probably in tabular use-case format. If
-requirements documents exist this overview should refer to these
-documents.
-
-Keep these excerpts as short as possible. Balance readability of this
-document with potential redundancy w.r.t to requirements documents.
-
-See [Introduction and Goals](https://docs.arc42.org/section-1/) in the
-arc42 documentation.
-
-### Quality Goals {#_quality_goals}
-
-::: formalpara-title
-**Contents**
-:::
-
-The top three (max five) quality goals for the architecture whose
-fulfillment is of highest importance to the major stakeholders. We
-really mean quality goals for the architecture. Don't confuse them with
-project goals. They are not necessarily identical.
-
-Consider this overview of potential topics (based upon the ISO 25010
-standard):
-
-![Categories of Quality
-Requirements](images/01_2_iso-25010-topics-EN.drawio.png)
+Kurzbeschreibung der fachlichen Aufgabenstellung, treibenden Kräfte,
+Extrakt (oder Abstract) der Anforderungen. Verweis auf (hoffentlich
+vorliegende) Anforderungsdokumente (mit Versionsbezeichnungen und
+Ablageorten).
 
 ::: formalpara-title
 **Motivation**
 :::
 
-You should know the quality goals of your most important stakeholders,
-since they will influence fundamental architectural decisions. Make sure
-to be very concrete about these qualities, avoid buzzwords. If you as an
-architect do not know how the quality of your work will be judged...
+Aus Sicht der späteren Nutzung ist die Unterstützung einer fachlichen
+Aufgabe oder Verbesserung der Qualität der eigentliche Beweggrund, ein
+neues System zu schaffen oder ein bestehendes zu modifizieren.
 
 ::: formalpara-title
 **Form**
 :::
 
-A table with quality goals and concrete scenarios, ordered by priorities
+Kurze textuelle Beschreibung, eventuell in tabellarischer Use-Case Form.
+Sofern vorhanden, sollte die Aufgabenstellung Verweise auf die
+entsprechenden Anforderungsdokumente enthalten.
 
-### Stakeholders {#_stakeholders}
+Halten Sie diese Auszüge so knapp wie möglich und wägen Sie Lesbarkeit
+und Redundanzfreiheit gegeneinander ab.
+
+Siehe [Anforderungen und Ziele](https://docs.arc42.org/section-1/) in
+der online-Dokumentation (auf Englisch!).
+
+### Qualitätsziele {#_qualit_tsziele}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Explicit overview of stakeholders of the system, i.e. all person, roles
-or organizations that
+Die Top-3 bis Top-5 der Qualitätsanforderungen für die Architektur,
+deren Erfüllung oder Einhaltung den maßgeblichen Stakeholdern besonders
+wichtig sind. Gemeint sind hier wirklich Qualitätsziele, die nicht
+unbedingt mit den Zielen des Projekts übereinstimmen. Beachten Sie den
+Unterschied.
 
--   should know the architecture
+Hier ein Überblick möglicher Themen (basierend auf dem ISO 25010
+Standard):
 
--   have to be convinced of the architecture
-
--   have to work with the architecture or with code
-
--   need the documentation of the architecture for their work
-
--   have to come up with decisions about the system or its development
+![Kategorien von
+Qualitätsanforderungen](images/01_2_iso-25010-topics-DE.drawio.png)
 
 ::: formalpara-title
 **Motivation**
 :::
 
-You should know all parties involved in development of the system or
-affected by the system. Otherwise, you may get nasty surprises later in
-the development process. These stakeholders determine the extent and the
-level of detail of your work and its results.
+Weil Qualitätsziele grundlegende Architekturentscheidungen oft
+maßgeblich beeinflussen, sollten Sie die für Ihre Stakeholder relevanten
+Qualitätsziele kennen, möglichst konkret und operationalisierbar.
 
 ::: formalpara-title
 **Form**
 :::
 
-Table with role names, person names, and their expectations with respect
-to the architecture and its documentation.
+Tabellarische Darstellung der Qualitätsziele mit möglichst konkreten
+Szenarien, geordnet nach Prioritäten.
 
-+-------------+---------------------------+---------------------------+
-| Role/Name   | Contact                   | Expectations              |
-+=============+===========================+===========================+
-| *\<Role-1>* | *\<Contact-1>*            | *\<Expectation-1>*        |
-+-------------+---------------------------+---------------------------+
-| *\<Role-2>* | *\<Contact-2>*            | *\<Expectation-2>*        |
-+-------------+---------------------------+---------------------------+
-
-# Architecture Constraints {#section-architecture-constraints}
+### Stakeholder {#_stakeholder}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Any requirement that constraints software architects in their freedom of
-design and implementation decisions or decision about the development
-process. These constraints sometimes go beyond individual systems and
-are valid for whole organizations and companies.
+Expliziter Überblick über die Stakeholder des Systems -- über alle
+Personen, Rollen oder Organisationen --, die
+
+-   die Architektur kennen sollten oder
+
+-   von der Architektur überzeugt werden müssen,
+
+-   mit der Architektur oder dem Code arbeiten (z.B. Schnittstellen
+    nutzen),
+
+-   die Dokumentation der Architektur für ihre eigene Arbeit benötigen,
+
+-   Entscheidungen über das System und dessen Entwicklung treffen.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-Architects should know exactly where they are free in their design
-decisions and where they must adhere to constraints. Constraints must
-always be dealt with; they may be negotiable, though.
+Sie sollten die Projektbeteiligten und -betroffenen kennen, sonst
+erleben Sie später im Entwicklungsprozess Überraschungen. Diese
+Stakeholder bestimmen unter anderem Umfang und Detaillierungsgrad der
+von Ihnen zu leistenden Arbeit und Ergebnisse.
 
 ::: formalpara-title
 **Form**
 :::
 
-Simple tables of constraints with explanations. If needed you can
-subdivide them into technical constraints, organizational and political
-constraints and conventions (e.g. programming or versioning guidelines,
-documentation or naming conventions)
+Tabelle mit Rollen- oder Personennamen, sowie deren Erwartungshaltung
+bezüglich der Architektur und deren Dokumentation.
 
-See [Architecture Constraints](https://docs.arc42.org/section-2/) in the
-arc42 documentation.
++-----------------+-----------------+-----------------------------------+
+| Rolle           | Kontakt         | Erwartungshaltung                 |
++=================+=================+===================================+
+| *\<Rolle-1>*    | *\<Kontakt-1>*  | *\<Erwartung-1>*                  |
++-----------------+-----------------+-----------------------------------+
+| *\<Rolle-2>*    | *\<Kontakt-2>*  | *\<Erwartung-2>*                  |
++-----------------+-----------------+-----------------------------------+
 
-## System Scope and Context {#section-system-scope-and-context}
+## Randbedingungen {#section-architecture-constraints}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-System scope and context - as the name suggests - delimits your system
-(i.e. your scope) from all its communication partners (neighboring
-systems and users, i.e. the context of your system). It thereby
-specifies the external interfaces.
-
-If necessary, differentiate the business context (domain specific inputs
-and outputs) from the technical context (channels, protocols, hardware).
+Randbedingungen und Vorgaben, die ihre Freiheiten bezüglich Entwurf,
+Implementierung oder Ihres Entwicklungsprozesses einschränken. Diese
+Randbedingungen gelten manchmal organisations- oder firmenweit über die
+Grenzen einzelner Systeme hinweg.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-The domain interfaces and technical interfaces to communication partners
-are among your system's most critical aspects. Make sure that you
-completely understand them.
+Für eine tragfähige Architektur sollten Sie genau wissen, wo Ihre
+Freiheitsgrade bezüglich der Entwurfsentscheidungen liegen und wo Sie
+Randbedingungen beachten müssen. Sie können Randbedingungen vielleicht
+noch verhandeln, zunächst sind sie aber da.
 
 ::: formalpara-title
 **Form**
 :::
 
-Various options:
+Einfache Tabellen der Randbedingungen mit Erläuterungen. Bei Bedarf
+unterscheiden Sie technische, organisatorische und politische
+Randbedingungen oder übergreifende Konventionen (beispielsweise
+Programmier- oder Versionierungsrichtlinien, Dokumentations- oder
+Namenskonvention).
 
--   Context diagrams
+Siehe [Randbedingungen](https://docs.arc42.org/section-2/) in der
+online-Dokumentation (auf Englisch!).
 
--   Lists of communication partners and their interfaces.
-
-See [Context and Scope](https://docs.arc42.org/section-3/) in the arc42
-documentation.
-
-### Business Context {#_business_context}
+## Kontextabgrenzung {#section-system-scope-and-context}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Specification of **all** communication partners (users, IT-systems, ...)
-with explanations of domain specific inputs and outputs or interfaces.
-Optionally you can add domain specific formats or communication
-protocols.
+Die Kontextabgrenzung grenzt das System gegen alle Kommunikationspartner
+(Nachbarsysteme und Benutzerrollen) ab. Sie legt damit die externen
+Schnittstellen fest und zeigt damit auch die Verantwortlichkeit (scope)
+Ihres Systems: Welche Verantwortung trägt das System und welche
+Verantwortung übernehmen die Nachbarsysteme?
+
+Differenzieren Sie fachlichen (Ein- und Ausgaben) und technischen
+Kontext (Kanäle, Protokolle, Hardware), falls nötig.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-All stakeholders should understand which data are exchanged with the
-environment of the system.
+Die fachlichen und technischen Schnittstellen zur Kommunikation gehören
+zu den kritischsten Aspekten eines Systems. Stellen Sie sicher, dass Sie
+diese komplett verstanden haben.
 
 ::: formalpara-title
 **Form**
 :::
 
-All kinds of diagrams that show the system as a black box and specify
-the domain interfaces to communication partners.
+Verschiedene Optionen:
 
-Alternatively (or additionally) you can use a table. The title of the
-table is the name of your system, the three columns contain the name of
-the communication partner, the inputs, and the outputs.
+-   Diverse Kontextdiagramme
 
-**\<Diagram or Table>**
+-   Listen von Kommunikationsbeziehungen mit deren Schnittstellen
 
-**\<optionally: Explanation of external domain interfaces>**
+Siehe [Kontextabgrenzung](https://docs.arc42.org/section-3/) in der
+online-Dokumentation (auf Englisch!).
 
-### Technical Context {#_technical_context}
+### Fachlicher Kontext {#_fachlicher_kontext}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Technical interfaces (channels and transmission media) linking your
-system to its environment. In addition a mapping of domain specific
-input/output to the channels, i.e. an explanation which I/O uses which
-channel.
+Festlegung **aller** Kommunikationsbeziehungen (Nutzer, IT-Systeme, ...)
+mit Erklärung der fachlichen Ein- und Ausgabedaten oder Schnittstellen.
+Zusätzlich (bei Bedarf) fachliche Datenformate oder Protokolle der
+Kommunikation mit den Nachbarsystemen.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-Many stakeholders make architectural decision based on the technical
-interfaces between the system and its context. Especially infrastructure
-or hardware designers decide these technical interfaces.
+Alle Beteiligten müssen verstehen, welche fachlichen Informationen mit
+der Umwelt ausgetauscht werden.
 
 ::: formalpara-title
 **Form**
 :::
 
-E.g. UML deployment diagram describing channels to neighboring systems,
-together with a mapping table showing the relationships between channels
-and input/output.
+Alle Diagrammarten, die das System als Blackbox darstellen und die
+fachlichen Schnittstellen zu den Nachbarsystemen beschreiben.
 
-**\<Diagram or Table>**
+Alternativ oder ergänzend können Sie eine Tabelle verwenden. Der Titel
+gibt den Namen Ihres Systems wieder; die drei Spalten sind:
+Kommunikationsbeziehung, Eingabe, Ausgabe.
 
-**\<optionally: Explanation of technical interfaces>**
+**\<Diagramm und/oder Tabelle>**
 
-**\<Mapping Input/Output to Channels>**
+**\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
-## Solution Strategy {#section-solution-strategy}
+### Technischer Kontext {#_technischer_kontext}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-A short summary and explanation of the fundamental decisions and
-solution strategies, that shape system architecture. It includes
-
--   technology decisions
-
--   decisions about the top-level decomposition of the system, e.g.
-    usage of an architectural pattern or design pattern
-
--   decisions on how to achieve key quality goals
-
--   relevant organizational decisions, e.g. selecting a development
-    process or delegating certain tasks to third parties.
+Technische Schnittstellen (Kanäle, Übertragungsmedien) zwischen dem
+System und seiner Umwelt. Zusätzlich eine Erklärung (*mapping*), welche
+fachlichen Ein- und Ausgaben über welche technischen Kanäle fließen.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-These decisions form the cornerstones for your architecture. They are
-the foundation for many other detailed decisions or implementation
-rules.
+Viele Stakeholder treffen Architekturentscheidungen auf Basis der
+technischen Schnittstellen des Systems zu seinem Kontext.
+
+Insbesondere bei der Entwicklung von Infrastruktur oder Hardware sind
+diese technischen Schnittstellen durchaus entscheidend.
 
 ::: formalpara-title
 **Form**
 :::
 
-Keep the explanations of such key decisions short.
+Beispielsweise UML Deployment-Diagramme mit den Kanälen zu
+Nachbarsystemen, begleitet von einer Tabelle, die Kanäle auf
+Ein-/Ausgaben abbildet.
 
-Motivate what was decided and why it was decided that way, based upon
-problem statement, quality goals and key constraints. Refer to details
-in the following sections.
+**\<Diagramm oder Tabelle>**
 
-See [Solution Strategy](https://docs.arc42.org/section-4/) in the arc42
-documentation.
+**\<optional: Erläuterung der externen technischen Schnittstellen>**
 
-## Building Block View {#section-building-block-view}
+**\<Mapping fachliche auf technische Schnittstellen>**
+
+## Lösungsstrategie {#section-solution-strategy}
 
 ::: formalpara-title
-**Content**
+**Inhalt**
 :::
 
-The building block view shows the static decomposition of the system
-into building blocks (modules, components, subsystems, classes,
-interfaces, packages, libraries, frameworks, layers, partitions, tiers,
-functions, macros, operations, data structures, ...) as well as their
-dependencies (relationships, associations, ...)
+Kurzer Überblick über die grundlegenden Entscheidungen und
+Lösungsansätze, die Entwurf und Implementierung des Systems prägen.
+Hierzu gehören:
 
-This view is mandatory for every architecture documentation. In analogy
-to a house this is the *floor plan*.
+-   Technologieentscheidungen
+
+-   Entscheidungen über die Top-Level-Zerlegung des Systems,
+    beispielsweise die Verwendung gesamthaft prägender Entwurfs- oder
+    Architekturmuster,
+
+-   Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen
+    sowie
+
+-   relevante organisatorische Entscheidungen, beispielsweise für
+    bestimmte Entwicklungsprozesse oder Delegation bestimmter Aufgaben
+    an andere Stakeholder.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-Maintain an overview of your source code by making its structure
-understandable through abstraction.
-
-This allows you to communicate with your stakeholder on an abstract
-level without disclosing implementation details.
+Diese wichtigen Entscheidungen bilden wesentliche „Eckpfeiler" der
+Architektur. Von ihnen hängen viele weitere Entscheidungen oder
+Implementierungsregeln ab.
 
 ::: formalpara-title
 **Form**
 :::
 
-The building block view is a hierarchical collection of black boxes and
-white boxes (see figure below) and their descriptions.
+Fassen Sie die zentralen Entwurfsentscheidungen **kurz** zusammen.
+Motivieren Sie, ausgehend von Aufgabenstellung, Qualitätszielen und
+Randbedingungen, was Sie entschieden haben und warum Sie so entschieden
+haben. Vermeiden Sie redundante Beschreibungen und verweisen Sie eher
+auf weitere Ausführungen in Folgeabschnitten.
 
-![Hierarchy of building blocks](images/05_building_blocks-EN.png)
+Siehe [Lösungsstrategie](https://docs.arc42.org/section-4/) in der
+online-Dokumentation (auf Englisch!).
 
-**Level 1** is the white box description of the overall system together
-with black box descriptions of all contained building blocks.
+## Bausteinsicht {#section-building-block-view}
 
-**Level 2** zooms into some building blocks of level 1. Thus it contains
-the white box description of selected building blocks of level 1,
-together with black box descriptions of their internal building blocks.
+::: formalpara-title
+**Inhalt**
+:::
 
-**Level 3** zooms into selected building blocks of level 2, and so on.
+Die Bausteinsicht zeigt die statische Zerlegung des Systems in Bausteine
+(Module, Komponenten, Subsysteme, Klassen, Schnittstellen, Pakete,
+Bibliotheken, Frameworks, Schichten, Partitionen, Tiers, Funktionen,
+Makros, Operationen, Datenstrukturen, ...) sowie deren Abhängigkeiten
+(Beziehungen, Assoziationen, ...)
 
-See [Building Block View](https://docs.arc42.org/section-5/) in the
-arc42 documentation.
+Diese Sicht sollte in jeder Architekturdokumentation vorhanden sein. In
+der Analogie zum Hausbau bildet die Bausteinsicht den *Grundrissplan*.
 
-### Whitebox Overall System {#_whitebox_overall_system}
+::: formalpara-title
+**Motivation**
+:::
 
-Here you describe the decomposition of the overall system using the
-following white box template. It contains
+Behalten Sie den Überblick über den Quellcode, indem Sie die statische
+Struktur des Systems durch Abstraktion verständlich machen.
 
--   an overview diagram
+Damit ermöglichen Sie Kommunikation auf abstrakterer Ebene, ohne zu
+viele Implementierungsdetails offenlegen zu müssen.
 
--   a motivation for the decomposition
+::: formalpara-title
+**Form**
+:::
 
--   black box descriptions of the contained building blocks. For these
-    we offer you alternatives:
+Die Bausteinsicht ist eine hierarchische Sammlung von Blackboxen und
+Whiteboxen (siehe Abbildung unten) und deren Beschreibungen.
 
-    -   use *one* table for a short and pragmatic overview of all
-        contained building blocks and their interfaces
+![Hierarchie in der Bausteinsicht](images/05_building_blocks-DE.png)
 
-    -   use a list of black box descriptions of the building blocks
-        according to the black box template (see below). Depending on
-        your choice of tool this list could be sub-chapters (in text
-        files), sub-pages (in a Wiki) or nested elements (in a modeling
-        tool).
+**Ebene 1** ist die Whitebox-Beschreibung des Gesamtsystems, zusammen
+mit Blackbox-Beschreibungen der darin enthaltenen Bausteine.
 
--   (optional:) important interfaces, that are not explained in the
-    black box templates of a building block, but are very important for
-    understanding the white box. Since there are so many ways to specify
-    interfaces why do not provide a specific template for them. In the
-    worst case you have to specify and describe syntax, semantics,
-    protocols, error handling, restrictions, versions, qualities,
-    necessary compatibilities and many things more. In the best case you
-    will get away with examples or simple signatures.
+**Ebene 2** zoomt in einige Bausteine der Ebene 1 hinein. Sie enthält
+somit die Whitebox-Beschreibungen ausgewählter Bausteine der Ebene 1,
+jeweils zusammen mit Blackbox-Beschreibungen darin enthaltener
+Bausteine.
 
-***\<Overview Diagram>***
+**Ebene 3** zoomt in einige Bausteine der Ebene 2 hinein, usw.
 
-Motivation
+Siehe [Bausteinsicht](https://docs.arc42.org/section-5/) in der
+online-Dokumentation (auf Englisch!).
 
-:   *\<text explanation>*
+### Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
-Contained Building Blocks
+An dieser Stelle beschreiben Sie die Zerlegung des Gesamtsystems anhand
+des nachfolgenden Whitebox-Templates. Dieses enthält:
 
-:   *\<Description of contained building block (black boxes)>*
+-   Ein Übersichtsdiagramm
 
-Important Interfaces
+-   die Begründung dieser Zerlegung
 
-:   *\<Description of important interfaces>*
+-   Blackbox-Beschreibungen der hier enthaltenen Bausteine. Dafür haben
+    Sie verschiedene Optionen:
 
-Insert your explanations of black boxes from level 1:
+    -   in *einer* Tabelle, gibt einen kurzen und pragmatischen
+        Überblick über die enthaltenen Bausteine sowie deren
+        Schnittstellen.
 
-If you use tabular form you will only describe your black boxes with
-name and responsibility according to the following schema:
+    -   als Liste von Blackbox-Beschreibungen der Bausteine, gemäß dem
+        Blackbox-Template (siehe unten). Diese Liste können Sie, je nach
+        Werkzeug, etwa in Form von Unterkapiteln (Text), Unter-Seiten
+        (Wiki) oder geschachtelten Elementen (Modellierungswerkzeug)
+        darstellen.
+
+-   (optional:) wichtige Schnittstellen, die nicht bereits im
+    Blackbox-Template eines der Bausteine erläutert werden, aber für das
+    Verständnis der Whitebox von zentraler Bedeutung sind. Aufgrund der
+    vielfältigen Möglichkeiten oder Ausprägungen von Schnittstellen
+    geben wir hierzu kein weiteres Template vor. Im schlimmsten Fall
+    müssen Sie Syntax, Semantik, Protokolle, Fehlerverhalten,
+    Restriktionen, Versionen, Qualitätseigenschaften, notwendige
+    Kompatibilitäten und vieles mehr spezifizieren oder beschreiben. Im
+    besten Fall kommen Sie mit Beispielen oder einfachen Signaturen
+    zurecht.
+
+***\<Übersichtsdiagramm>***
+
+Begründung
+
+:   *\<Erläuternder Text>*
+
+Enthaltene Bausteine
+
+:   *\<Beschreibung der enthaltenen Bausteine (Blackboxen)>*
+
+Wichtige Schnittstellen
+
+:   *\<Beschreibung wichtiger Schnittstellen>*
+
+Hier folgen jetzt Erläuterungen zu Blackboxen der Ebene 1.
+
+Falls Sie die tabellarische Beschreibung wählen, so werden Blackboxen
+darin nur mit Name und Verantwortung nach folgendem Muster beschrieben:
 
 +-----------------------+-----------------------------------------------+
-| **Name**              | **Responsibility**                            |
+| **Name**              | **Verantwortung**                             |
 +=======================+===============================================+
-| *\<black box 1>*      |  *\<Text>*                                    |
+| *\<Blackbox 1>*       |  *\<Text>*                                    |
 +-----------------------+-----------------------------------------------+
-| *\<black box 2>*      |  *\<Text>*                                    |
+| *\<Blackbox 2>*       |  *\<Text>*                                    |
 +-----------------------+-----------------------------------------------+
 
-If you use a list of black box descriptions then you fill in a separate
-black box template for every important building block . Its headline is
-the name of the black box.
+Falls Sie die ausführliche Liste von Blackbox-Beschreibungen wählen,
+beschreiben Sie jede wichtige Blackbox in einem eigenen
+Blackbox-Template. Dessen Überschrift ist jeweils der Namen dieser
+Blackbox.
 
-#### \<Name black box 1> {#__name_black_box_1}
+#### \<Name Blackbox 1> {#__name_blackbox_1}
 
-Here you describe \<black box 1> according the the following black box
-template:
+Beschreiben Sie die \<Blackbox 1> anhand des folgenden
+Blackbox-Templates:
 
--   Purpose/Responsibility
+-   Zweck/Verantwortung
 
--   Interface(s), when they are not extracted as separate paragraphs.
-    This interfaces may include qualities and performance
-    characteristics.
+-   Schnittstelle(n), sofern diese nicht als eigenständige
+    Beschreibungen herausgezogen sind. Hierzu gehören eventuell auch
+    Qualitäts- und Leistungsmerkmale dieser Schnittstelle.
 
--   (Optional) Quality-/Performance characteristics of the black box,
-    e.g.availability, run time behavior, ....
+-   (Optional) Qualitäts-/Leistungsmerkmale der Blackbox, beispielsweise
+    Verfügbarkeit, Laufzeitverhalten o. Ä.
 
--   (Optional) directory/file location
+-   (Optional) Ablageort/Datei(en)
 
--   (Optional) Fulfilled requirements (if you need traceability to
-    requirements).
+-   (Optional) Erfüllte Anforderungen, falls Sie Traceability zu
+    Anforderungen benötigen.
 
--   (Optional) Open issues/problems/risks
+-   (Optional) Offene Punkte/Probleme/Risiken
 
-*\<Purpose/Responsibility>*
+*\<Zweck/Verantwortung>*
 
-*\<Interface(s)>*
+*\<Schnittstelle(n)>*
 
-*\<(Optional) Quality/Performance Characteristics>*
+*\<(Optional) Qualitäts-/Leistungsmerkmale>*
 
-*\<(Optional) Directory/File Location>*
+*\<(Optional) Ablageort/Datei(en)>*
 
-*\<(Optional) Fulfilled Requirements>*
+*\<(Optional) Erfüllte Anforderungen>*
 
-*\<(optional) Open Issues/Problems/Risks>*
+*\<(optional) Offene Punkte/Probleme/Risiken>*
 
-#### \<Name black box 2> {#__name_black_box_2}
+#### \<Name Blackbox 2> {#__name_blackbox_2}
 
-*\<black box template>*
+*\<Blackbox-Template>*
 
-##### \<Name black box n> {#__name_black_box_n}
+#### \<Name Blackbox n> {#__name_blackbox_n}
 
-*\<black box template>*
+*\<Blackbox-Template>*
 
-#### \<Name interface 1> {#__name_interface_1}
+#### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
 
 ...
 
-#### \<Name interface m> {#__name_interface_m}
+#### \<Name Schnittstelle m> {#__name_schnittstelle_m}
 
-### Level 2 {#_level_2}
+### Ebene 2 {#_ebene_2}
 
-Here you can specify the inner structure of (some) building blocks from
-level 1 as white boxes.
+Beschreiben Sie den inneren Aufbau (einiger) Bausteine aus Ebene 1 als
+Whitebox.
 
-You have to decide which building blocks of your system are important
-enough to justify such a detailed description. Please prefer relevance
-over completeness. Specify important, surprising, risky, complex or
-volatile building blocks. Leave out normal, simple, boring or
-standardized parts of your system
+Welche Bausteine Ihres Systems Sie hier beschreiben, müssen Sie selbst
+entscheiden. Bitte stellen Sie dabei Relevanz vor Vollständigkeit.
+Skizzieren Sie wichtige, überraschende, riskante, komplexe oder
+besonders volatile Bausteine. Normale, einfache oder standardisierte
+Teile sollten Sie weglassen.
 
-#### White Box *\<building block 1>* {#_white_box_emphasis_building_block_1_emphasis}
+#### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
 
-...describes the internal structure of *building block 1*.
+...zeigt das Innenleben von *Baustein 1*.
 
-*\<white box template>*
+*\<Whitebox-Template>*
 
-#### White Box *\<building block 2>* {#_white_box_emphasis_building_block_2_emphasis}
+#### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
 
-*\<white box template>*
+*\<Whitebox-Template>*
 
 ...
 
-#### White Box *\<building block m>* {#_white_box_emphasis_building_block_m_emphasis}
+#### Whitebox *\<Baustein m>* {#_whitebox_emphasis_baustein_m_emphasis}
 
-*\<white box template>*
+*\<Whitebox-Template>*
 
-### Level 3 {#_level_3}
+### Ebene 3 {#_ebene_3}
 
-Here you can specify the inner structure of (some) building blocks from
-level 2 as white boxes.
+Beschreiben Sie den inneren Aufbau (einiger) Bausteine aus Ebene 2 als
+Whitebox.
 
-When you need more detailed levels of your architecture please copy this
-part of arc42 for additional levels.
+Bei tieferen Gliederungen der Architektur kopieren Sie diesen Teil von
+arc42 für die weiteren Ebenen.
 
-#### White Box \<\_building block x.1\_\> {#_white_box_building_block_x_1}
+#### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
 
-Specifies the internal structure of *building block x.1*.
+...zeigt das Innenleben von *Baustein x.1*.
 
-*\<white box template>*
+*\<Whitebox-Template>*
 
-#### White Box \<\_building block x.2\_\> {#_white_box_building_block_x_2}
+#### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
 
-*\<white box template>*
+*\<Whitebox-Template>*
 
-#### White Box \<\_building block y.1\_\> {#_white_box_building_block_y_1}
+#### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
 
-*\<white box template>*
+*\<Whitebox-Template>*
 
-## Runtime View {#section-runtime-view}
+## Laufzeitsicht {#section-runtime-view}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-The runtime view describes concrete behavior and interactions of the
-system's building blocks in form of scenarios from the following areas:
+Diese Sicht erklärt konkrete Abläufe und Beziehungen zwischen Bausteinen
+in Form von Szenarien aus den folgenden Bereichen:
 
--   important use cases or features: how do building blocks execute
-    them?
+-   Wichtige Abläufe oder *Features*: Wie führen die Bausteine der
+    Architektur die wichtigsten Abläufe durch?
 
--   interactions at critical external interfaces: how do building blocks
-    cooperate with users and neighboring systems?
+-   Interaktionen an kritischen externen Schnittstellen: Wie arbeiten
+    Bausteine mit Nutzern und Nachbarsystemen zusammen?
 
--   operation and administration: launch, start-up, stop
+-   Betrieb und Administration: Inbetriebnahme, Start, Stop.
 
--   error and exception scenarios
+-   Fehler- und Ausnahmeszenarien
 
-Remark: The main criterion for the choice of possible scenarios
-(sequences, workflows) is their **architectural relevance**. It is
-**not** important to describe a large number of scenarios. You should
-rather document a representative selection.
+Anmerkung: Das Kriterium für die Auswahl der möglichen Szenarien (d.h.
+Abläufe) des Systems ist deren Architekturrelevanz. Es geht nicht darum,
+möglichst viele Abläufe darzustellen, sondern eine angemessene Auswahl
+zu dokumentieren.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-You should understand how (instances of) building blocks of your system
-perform their job and communicate at runtime. You will mainly capture
-scenarios in your documentation to communicate your architecture to
-stakeholders that are less willing or able to read and understand the
-static models (building block view, deployment view).
+Sie sollten verstehen, wie (Instanzen von) Bausteine(n) Ihres Systems
+ihre jeweiligen Aufgaben erfüllen und zur Laufzeit miteinander
+kommunizieren.
+
+Nutzen Sie diese Szenarien in der Dokumentation hauptsächlich für eine
+verständlichere Kommunikation mit denjenigen Stakeholdern, die die
+statischen Modelle (z.B. Bausteinsicht, Verteilungssicht) weniger
+verständlich finden.
 
 ::: formalpara-title
 **Form**
 :::
 
-There are many notations for describing scenarios, e.g.
+Für die Beschreibung von Szenarien gibt es zahlreiche
+Ausdrucksmöglichkeiten. Nutzen Sie beispielsweise:
 
--   numbered list of steps (in natural language)
+-   Nummerierte Schrittfolgen oder Aufzählungen in Umgangssprache
 
--   activity diagrams or flow charts
+-   Aktivitäts- oder Flussdiagramme
 
--   sequence diagrams
+-   Sequenzdiagramme
 
--   BPMN or EPCs (event process chains)
+-   BPMN (Geschäftsprozessmodell und -notation) oder EPKs
+    (Ereignis-Prozessketten)
 
--   state machines
+-   Zustandsautomaten
 
 -   ...
 
-See [Runtime View](https://docs.arc42.org/section-6/) in the arc42
-documentation.
+Siehe [Laufzeitsicht](https://docs.arc42.org/section-6/) in der
+online-Dokumentation (auf Englisch!).
 
-### \<Runtime Scenario 1> {#__runtime_scenario_1}
+### *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
 
--   *\<insert runtime diagram or textual description of the scenario>*
+-   \<hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
 
--   *\<insert description of the notable aspects of the interactions
-    between the building block instances depicted in this diagram.\>*
+-   \<hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem
+    Szenario erläutern>
 
-### \<Runtime Scenario 2> {#__runtime_scenario_2}
-
-### ... {#_}
-
-### \<Runtime Scenario n> {#__runtime_scenario_n}
-
-## Deployment View {#section-deployment-view}
-
-::: formalpara-title
-**Content**
-:::
-
-The deployment view describes:
-
-1.  technical infrastructure used to execute your system, with
-    infrastructure elements like geographical locations, environments,
-    computers, processors, channels and net topologies as well as other
-    infrastructure elements and
-
-2.  mapping of (software) building blocks to that infrastructure
-    elements.
-
-Often systems are executed in different environments, e.g. development
-environment, test environment, production environment. In such cases you
-should document all relevant environments.
-
-Especially document a deployment view if your software is executed as
-distributed system with more than one computer, processor, server or
-container or when you design and construct your own hardware processors
-and chips.
-
-From a software perspective it is sufficient to capture only those
-elements of an infrastructure that are needed to show a deployment of
-your building blocks. Hardware architects can go beyond that and
-describe an infrastructure to any level of detail they need to capture.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Software does not run without hardware. This underlying infrastructure
-can and will influence a system and/or some cross-cutting concepts.
-Therefore, there is a need to know the infrastructure.
-
-Maybe a highest level deployment diagram is already contained in section
-3.2. as technical context with your own infrastructure as ONE black box.
-In this section one can zoom into this black box using additional
-deployment diagrams:
-
--   UML offers deployment diagrams to express that view. Use it,
-    probably with nested diagrams, when your infrastructure is more
-    complex.
-
--   When your (hardware) stakeholders prefer other kinds of diagrams
-    rather than a deployment diagram, let them use any kind that is able
-    to show nodes and channels of the infrastructure.
-
-See [Deployment View](https://docs.arc42.org/section-7/) in the arc42
-documentation.
-
-### Infrastructure Level 1 {#_infrastructure_level_1}
-
-Describe (usually in a combination of diagrams, tables, and text):
-
--   distribution of a system to multiple locations, environments,
-    computers, processors, .., as well as physical connections between
-    them
-
--   important justifications or motivations for this deployment
-    structure
-
--   quality and/or performance features of this infrastructure
-
--   mapping of software artifacts to elements of this infrastructure
-
-For multiple environments or alternative deployments please copy and
-adapt this section of arc42 for all relevant environments.
-
-***\<Overview Diagram>***
-
-Motivation
-
-:   *\<explanation in text form>*
-
-Quality and/or Performance Features
-
-:   *\<explanation in text form>*
-
-Mapping of Building Blocks to Infrastructure
-
-:   *\<description of the mapping>*
-
-### Infrastructure Level 2 {#_infrastructure_level_2}
-
-Here you can include the internal structure of (some) infrastructure
-elements from level 1.
-
-Please copy the structure from level 1 for each selected element.
-
-#### *\<Infrastructure Element 1>* {#__emphasis_infrastructure_element_1_emphasis}
-
-*\<diagram + explanation>*
-
-#### *\<Infrastructure Element 2>* {#__emphasis_infrastructure_element_2_emphasis}
-
-*\<diagram + explanation>*
+### *\<Bezeichnung Laufzeitszenario 2>* {#__emphasis_bezeichnung_laufzeitszenario_2_emphasis}
 
 ...
 
-#### *\<Infrastructure Element n>* {#__emphasis_infrastructure_element_n_emphasis}
+### *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
-*\<diagram + explanation>*
+...
 
-## Cross-cutting Concepts {#section-concepts}
+## Verteilungssicht {#section-deployment-view}
 
 ::: formalpara-title
-**Content**
+**Inhalt**
 :::
 
-This section describes overall, principal regulations and solution ideas
-that are relevant in multiple parts (= cross-cutting) of your system.
-Such concepts are often related to multiple building blocks. They can
-include many different topics, such as
+Die Verteilungssicht beschreibt:
 
--   models, especially domain models
+1.  die technische Infrastruktur, auf der Ihr System ausgeführt wird,
+    mit Infrastrukturelementen wie Standorten, Umgebungen, Rechnern,
+    Prozessoren, Kanälen und Netztopologien sowie sonstigen
+    Bestandteilen, und
 
--   architecture or design patterns
+2.  die Abbildung von (Software-)Bausteinen auf diese Infrastruktur.
 
--   rules for using specific technology
+Häufig laufen Systeme in unterschiedlichen Umgebungen, beispielsweise
+Entwicklung-/Test- oder Produktionsumgebungen. In solchen Fällen sollten
+Sie alle relevanten Umgebungen aufzeigen.
 
--   principal, often technical decisions of an overarching (=
-    cross-cutting) nature
+Nutzen Sie die Verteilungssicht insbesondere dann, wenn Ihre Software
+auf mehr als einem Rechner, Prozessor, Server oder Container abläuft
+oder Sie Ihre Hardware sogar selbst konstruieren.
 
--   implementation rules
+Aus Softwaresicht genügt es, auf die Aspekte zu achten, die für die
+Softwareverteilung relevant sind. Insbesondere bei der
+Hardwareentwicklung kann es notwendig sein, die Infrastruktur mit
+beliebigen Details zu beschreiben.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-Concepts form the basis for *conceptual integrity* (consistency,
-homogeneity) of the architecture. Thus, they are an important
-contribution to achieve inner qualities of your system.
-
-Some of these concepts cannot be assigned to individual building blocks,
-e.g. security or safety.
+Software läuft nicht ohne Infrastruktur. Diese zugrundeliegende
+Infrastruktur beeinflusst Ihr System und/oder querschnittliche
+Lösungskonzepte, daher müssen Sie diese Infrastruktur kennen.
 
 ::: formalpara-title
 **Form**
 :::
 
-The form can be varied:
+Das oberste Verteilungsdiagramm könnte bereits in Ihrem technischen
+Kontext enthalten sein, mit Ihrer Infrastruktur als EINE Blackbox. Jetzt
+zoomen Sie in diese Infrastruktur mit weiteren Verteilungsdiagrammen
+hinein:
 
--   concept papers with any kind of structure
+-   Die UML stellt mit Verteilungsdiagrammen (Deployment diagrams) eine
+    Diagrammart zur Verfügung, um diese Sicht auszudrücken. Nutzen Sie
+    diese, evtl. auch geschachtelt, wenn Ihre Verteilungsstruktur es
+    verlangt.
 
--   cross-cutting model excerpts or scenarios using notations of the
-    architecture views
+-   Falls Ihre Infrastruktur-Stakeholder andere Diagrammarten
+    bevorzugen, die beispielsweise Prozessoren und Kanäle zeigen, sind
+    diese hier ebenfalls einsetzbar.
 
--   sample implementations, especially for technical concepts
+Siehe [Verteilungssicht](https://docs.arc42.org/section-7/) in der
+online-Dokumentation (auf Englisch!).
 
--   reference to typical usage of standard frameworks (e.g. using
-    Hibernate for object/relational mapping)
+### Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
+
+An dieser Stelle beschreiben Sie (als Kombination von Diagrammen mit
+Tabellen oder Texten):
+
+-   die Verteilung des Gesamtsystems auf mehrere Standorte, Umgebungen,
+    Rechner, Prozessoren o. Ä., sowie die physischen Verbindungskanäle
+    zwischen diesen,
+
+-   wichtige Begründungen für diese Verteilungsstruktur,
+
+-   Qualitäts- und/oder Leistungsmerkmale dieser Infrastruktur,
+
+-   Zuordnung von Softwareartefakten zu Bestandteilen der Infrastruktur
+
+Für mehrere Umgebungen oder alternative Deployments kopieren Sie diesen
+Teil von arc42 für alle wichtigen Umgebungen/Varianten.
+
+***\<Übersichtsdiagramm>***
+
+Begründung
+
+:   *\<Erläuternder Text>*
+
+Qualitäts- und/oder Leistungsmerkmale
+
+:   *\<Erläuternder Text>*
+
+Zuordnung von Bausteinen zu Infrastruktur
+
+:   *\<Beschreibung der Zuordnung>*
+
+### Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
+
+An dieser Stelle können Sie den inneren Aufbau (einiger)
+Infrastrukturelemente aus Ebene 1 beschreiben.
+
+Für jedes Infrastrukturelement kopieren Sie die Struktur aus Ebene 1.
+
+#### *\<Infrastrukturelement 1>* {#__emphasis_infrastrukturelement_1_emphasis}
+
+*\<Diagramm + Erläuterungen>*
+
+#### *\<Infrastrukturelement 2>* {#__emphasis_infrastrukturelement_2_emphasis}
+
+*\<Diagramm + Erläuterungen>*
+
+...
+
+#### *\<Infrastrukturelement n>* {#__emphasis_infrastrukturelement_n_emphasis}
+
+*\<Diagramm + Erläuterungen>*
+
+## Querschnittliche Konzepte {#section-concepts}
 
 ::: formalpara-title
-**Structure**
+**Inhalt**
 :::
 
-A potential (but not mandatory) structure for this section could be:
+Dieser Abschnitt beschreibt übergreifende, prinzipielle Regelungen und
+Lösungsansätze, die an mehreren Stellen (=*querschnittlich*) relevant
+sind.
 
--   Domain concepts
+Solche Konzepte betreffen oft mehrere Bausteine. Dazu können vielerlei
+Themen gehören, beispielsweise:
 
--   User Experience concepts (UX)
+-   Modelle, insbesondere fachliche Modelle
 
--   Safety and security concepts
+-   Architektur- oder Entwurfsmuster
 
--   Architecture and design patterns
+-   Regeln für den konkreten Einsatz von Technologien
 
--   \"Under-the-hood\"
+-   prinzipielle --- meist technische --- Festlegungen übergreifender
+    Art
 
--   development concepts
+-   Implementierungsregeln
 
--   operational concepts
+::: formalpara-title
+**Motivation**
+:::
 
-Note: it might be difficult to assign individual concepts to one
-specific topic on this list.
+Konzepte bilden die Grundlage für *konzeptionelle Integrität*
+(Konsistenz, Homogenität) der Architektur und damit eine wesentliche
+Grundlage für die innere Qualität Ihrer Systeme.
+
+Manche dieser Themen lassen sich nur schwer als Baustein in der
+Architektur unterbringen (z.B. das Thema „Sicherheit").
+
+::: formalpara-title
+**Form**
+:::
+
+Kann vielfältig sein:
+
+-   Konzeptpapiere mit beliebiger Gliederung,
+
+-   übergreifende Modelle/Szenarien mit Notationen, die Sie auch in den
+    Architektursichten nutzen,
+
+-   beispielhafte Implementierung speziell für technische Konzepte,
+
+-   Verweise auf „übliche" Nutzung von Standard-Frameworks
+    (beispielsweise die Nutzung von Hibernate als Object/Relational
+    Mapper).
+
+::: formalpara-title
+**Struktur**
+:::
+
+Eine mögliche (nicht aber notwendige!) Untergliederung dieses
+Abschnittes könnte wie folgt aussehen (wobei die Zuordnung von Themen zu
+den Gruppen nicht immer eindeutig ist):
+
+-   Fachliche Konzepte
+
+-   User Experience (UX)
+
+-   Sicherheitskonzepte (Safety und Security)
+
+-   Architektur- und Entwurfsmuster
+
+-   Unter-der-Haube
+
+-   Entwicklungskonzepte
+
+-   Betriebskonzepte
 
 ![Possible topics for crosscutting
-concepts](images/08-Crosscutting-Concepts-Structure-EN.png)
+concepts](images/08-Crosscutting-Concepts-Structure-DE.png)
 
-See [Concepts](https://docs.arc42.org/section-8/) in the arc42
-documentation.
+Siehe [Querschnittliche Konzepte](https://docs.arc42.org/section-8/) in
+der online-Dokumentation (auf Englisch).
 
-### *\<Concept 1>* {#__emphasis_concept_1_emphasis}
+### *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
 
-*\<explanation>*
+*\<Erklärung>*
 
-### *\<Concept 2>* {#__emphasis_concept_2_emphasis}
+### *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
 
-*\<explanation>*
+*\<Erklärung>*
 
 ...
 
-### *\<Concept n>* {#__emphasis_concept_n_emphasis}
+### *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
 
-*\<explanation>*
+*\<Erklärung>*
 
-## Architecture Decisions {#section-design-decisions}
+## Architekturentscheidungen {#section-design-decisions}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Important, expensive, large scale or risky architecture decisions
-including rationales. With \"decisions\" we mean selecting one
-alternative based on given criteria.
+Wichtige, teure, große oder riskante Architektur- oder
+Entwurfsentscheidungen inklusive der jeweiligen Begründungen. Mit
+\"Entscheidungen\" meinen wir hier die Auswahl einer von mehreren
+Alternativen unter vorgegebenen Kriterien.
 
-Please use your judgement to decide whether an architectural decision
-should be documented here in this central section or whether you better
-document it locally (e.g. within the white box template of one building
-block).
-
-Avoid redundancy. Refer to section 4, where you already captured the
-most important decisions of your architecture.
+Wägen Sie ab, inwiefern Sie Entscheidungen hier zentral beschreiben,
+oder wo eine lokale Beschreibung (z.B. in der Whitebox-Sicht von
+Bausteinen) sinnvoller ist. Vermeiden Sie Redundanz. Verweisen Sie evtl.
+auf Abschnitt 4, wo schon grundlegende strategische Entscheidungen
+beschrieben wurden.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-Stakeholders of your system should be able to comprehend and retrace
-your decisions.
+Stakeholder des Systems sollten wichtige Entscheidungen verstehen und
+nachvollziehen können.
 
 ::: formalpara-title
 **Form**
 :::
 
-Various options:
+Verschiedene Möglichkeiten:
 
 -   ADR ([Documenting Architecture
     Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions))
-    for every important decision
+    für jede wichtige Entscheidung
 
--   List or table, ordered by importance and consequences or:
+-   Liste oder Tabelle, nach Wichtigkeit und Tragweite der
+    Entscheidungen geordnet
 
--   more detailed in form of separate sections per decision
+-   ausführlicher in Form einzelner Unterkapitel je Entscheidung
 
-See [Architecture Decisions](https://docs.arc42.org/section-9/) in the
-arc42 documentation. There you will find links and examples about ADR.
+Siehe [Architekturentscheidungen](https://docs.arc42.org/section-9/) in
+der arc42 Dokumentation (auf Englisch!). Dort finden Sie Links und
+Beispiele zum Thema ADR.
 
-## Quality Requirements {#section-quality-scenarios}
-
-::: formalpara-title
-**Content**
-:::
-
-This section contains all quality requirements as quality tree with
-scenarios. The most important ones have already been described in
-section 1.2. (quality goals)
-
-Here you can also capture quality requirements with lesser priority,
-which will not create high risks when they are not fully achieved.
+## Qualitätsanforderungen {#section-quality-scenarios}
 
 ::: formalpara-title
-**Motivation**
+**Inhalt**
 :::
 
-Since quality requirements will have a lot of influence on architectural
-decisions you should know for every stakeholder what is really important
-to them, concrete and measurable.
+Dieser Abschnitt enthält möglichst alle Qualitätsanforderungen als
+Qualitätsbaum mit Szenarien. Die wichtigsten davon haben Sie bereits in
+Abschnitt 1.2 (Qualitätsziele) hervorgehoben.
 
-See [Quality Requirements](https://docs.arc42.org/section-10/) in the
-arc42 documentation.
-
-### Quality Tree {#_quality_tree}
-
-::: formalpara-title
-**Content**
-:::
-
-The quality tree (as defined in ATAM -- Architecture Tradeoff Analysis
-Method) with quality/evaluation scenarios as leafs.
+Nehmen Sie hier auch Qualitätsanforderungen geringerer Priorität auf,
+deren Nichteinhaltung oder -erreichung geringe Risiken birgt.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-The tree structure with priorities provides an overview for a sometimes
-large number of quality requirements.
+Weil Qualitätsanforderungen die Architekturentscheidungen oft maßgeblich
+beeinflussen, sollten Sie die für Ihre Stakeholder relevanten
+Qualitätsanforderungen kennen, möglichst konkret und operationalisiert.
+
+::: formalpara-title
+**Weiterführende Informationen**
+:::
+
+Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
+der online-Dokumentation (auf Englisch!).
+
+### Qualitätsbaum {#_qualit_tsbaum}
+
+::: formalpara-title
+**Inhalt**
+:::
+
+Der Qualitätsbaum (à la ATAM) mit Qualitätsszenarien an den Blättern.
+
+::: formalpara-title
+**Motivation**
+:::
+
+Die mit Prioritäten versehene Baumstruktur gibt Überblick über
+die --- oftmals zahlreichen --- Qualitätsanforderungen.
+
+-   Baumartige Verfeinerung des Begriffes „Qualität", mit „Qualität"
+    oder „Nützlichkeit" als Wurzel.
+
+-   Mindmap mit Qualitätsoberbegriffen als Hauptzweige
+
+In jedem Fall sollten Sie hier Verweise auf die Qualitätsszenarien des
+folgenden Abschnittes aufnehmen.
+
+### Qualitätsszenarien {#_qualit_tsszenarien}
+
+::: formalpara-title
+**Inhalt**
+:::
+
+Konkretisierung der (in der Praxis oftmals vagen oder impliziten)
+Qualitätsanforderungen durch (Qualitäts-)Szenarien.
+
+Diese Szenarien beschreiben, was beim Eintreffen eines Stimulus auf ein
+System in bestimmten Situationen geschieht.
+
+Wesentlich sind zwei Arten von Szenarien:
+
+-   Nutzungsszenarien (auch bekannt als Anwendungs- oder
+    Anwendungsfallszenarien) beschreiben, wie das System zur Laufzeit
+    auf einen bestimmten Auslöser reagieren soll. Hierunter fallen auch
+    Szenarien zur Beschreibung von Effizienz oder Performance. Beispiel:
+    Das System beantwortet eine Benutzeranfrage innerhalb einer Sekunde.
+
+-   Änderungsszenarien beschreiben eine Modifikation des Systems oder
+    seiner unmittelbaren Umgebung. Beispiel: Eine zusätzliche
+    Funktionalität wird implementiert oder die Anforderung an ein
+    Qualitätsmerkmal ändert sich.
+
+::: formalpara-title
+**Motivation**
+:::
+
+Szenarien operationalisieren Qualitätsanforderungen und machen deren
+Erfüllung mess- oder entscheidbar.
+
+Insbesondere wenn Sie die Qualität Ihrer Architektur mit Methoden wie
+ATAM überprüfen wollen, bedürfen die in Abschnitt 1.2 genannten
+Qualitätsziele einer weiteren Präzisierung bis auf die Ebene von
+diskutierbaren und nachprüfbaren Szenarien.
 
 ::: formalpara-title
 **Form**
 :::
 
-The quality tree is a high-level overview of the quality goals and
-requirements:
+Entweder tabellarisch oder als Freitext.
 
--   tree-like refinement of the term \"quality\". Use \"quality\" or
-    \"usefulness\" as a root
-
--   a mind map with quality categories as main branches
-
-In any case the tree should include links to the scenarios of the
-following section.
-
-### Quality Scenarios {#_quality_scenarios}
+## Risiken und technische Schulden {#section-technical-risks}
 
 ::: formalpara-title
-**Contents**
+**Inhalt**
 :::
 
-Concretization of (sometimes vague or implicit) quality requirements
-using (quality) scenarios.
+Eine nach Prioritäten geordnete Liste der erkannten Architekturrisiken
+und/oder technischen Schulden.
 
-These scenarios describe what should happen when a stimulus arrives at
-the system.
+> Risikomanagement ist Projektmanagement für Erwachsene.
+>
+> ---  Tim Lister Atlantic Systems Guild
 
-For architects, two kinds of scenarios are important:
-
--   Usage scenarios (also called application scenarios or use case
-    scenarios) describe the system's runtime reaction to a certain
-    stimulus. This also includes scenarios that describe the system's
-    efficiency or performance. Example: The system reacts to a user's
-    request within one second.
-
--   Change scenarios describe a modification of the system or of its
-    immediate environment. Example: Additional functionality is
-    implemented or requirements for a quality attribute change.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Scenarios make quality requirements concrete and allow to more easily
-measure or decide whether they are fulfilled.
-
-Especially when you want to assess your architecture using methods like
-ATAM you need to describe your quality goals (from section 1.2) more
-precisely down to a level of scenarios that can be discussed and
-evaluated.
+Unter diesem Motto sollten Sie Architekturrisiken und/oder technische
+Schulden gezielt ermitteln, bewerten und Ihren Management-Stakeholdern
+(z.B. Projektleitung, Product-Owner) transparent machen.
 
 ::: formalpara-title
 **Form**
 :::
 
-Tabular or free form text.
+Liste oder Tabelle von Risiken und/oder technischen Schulden, eventuell
+mit vorgeschlagenen Maßnahmen zur Risikovermeidung, Risikominimierung
+oder dem Abbau der technischen Schulden.
 
-## Risks and Technical Debts {#section-technical-risks}
+Siehe [Risiken und technische
+Schulden](https://docs.arc42.org/section-11/) in der
+online-Dokumentation (auf Englisch!).
 
-::: formalpara-title
-**Contents**
-:::
-
-A list of identified technical risks or technical debts, ordered by
-priority
-
-::: formalpara-title
-**Motivation**
-:::
-
-"Risk management is project management for grown-ups" (Tim Lister,
-Atlantic Systems Guild.)
-
-This should be your motto for systematic detection and evaluation of
-risks and technical debts in the architecture, which will be needed by
-management stakeholders (e.g. project managers, product owners) as part
-of the overall risk analysis and measurement planning.
+## Glossar {#section-glossary}
 
 ::: formalpara-title
-**Form**
+**Inhalt**
 :::
 
-List of risks and/or technical debts, probably including suggested
-measures to minimize, mitigate or avoid risks or reduce technical debts.
+Die wesentlichen fachlichen und technischen Begriffe, die Stakeholder im
+Zusammenhang mit dem System verwenden.
 
-See [Risks and Technical Debt](https://docs.arc42.org/section-11/) in
-the arc42 documentation.
-
-## Glossary {#section-glossary}
-
-::: formalpara-title
-**Contents**
-:::
-
-The most important domain and technical terms that your stakeholders use
-when discussing the system.
-
-You can also see the glossary as source for translations if you work in
-multi-language teams.
+Nutzen Sie das Glossar ebenfalls als Übersetzungsreferenz, falls Sie in
+mehrsprachigen Teams arbeiten.
 
 ::: formalpara-title
 **Motivation**
 :::
 
-You should clearly define your terms, so that all stakeholders
+Sie sollten relevante Begriffe klar definieren, so dass alle Beteiligten
 
--   have an identical understanding of these terms
+-   diese Begriffe identisch verstehen, und
 
--   do not use synonyms and homonyms
+-   vermeiden, mehrere Begriffe für die gleiche Sache zu haben.
 
-A table with columns \<Term> and \<Definition>.
+Zweispaltige Tabelle mit \<Begriff> und \<Definition>.
 
-Potentially more columns in case you need translations.
+Eventuell weitere Spalten mit Übersetzungen, falls notwendig.
 
-See [Glossary](https://docs.arc42.org/section-12/) in the arc42
-documentation.
+Siehe [Glossar](https://docs.arc42.org/section-12/) in der
+online-Dokumentation (auf Englisch!).
 
 +-----------------------+-----------------------------------------------+
-| Term                  | Definition                                    |
+| Begriff               | Definition                                    |
 +=======================+===============================================+
-| *\<Term-1>*           | *\<definition-1>*                             |
+| *\<Begriff-1>*        | *\<Definition-1>*                             |
 +-----------------------+-----------------------------------------------+
-| *\<Term-2>*           | *\<definition-2>*                             |
+| *\<Begriff-2*         | *\<Definition-2>*                             |
 +-----------------------+-----------------------------------------------+
+

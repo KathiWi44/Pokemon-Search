@@ -2,34 +2,29 @@
 
 ## Introduction and Goals
 
-Describes the relevant requirements and the driving forces that software
-architects and development team must consider. These include
-
--   underlying business goals
 Das Geschäftsziel von PokeSearch besteht darin, eine intuitive Plattform für Pokémon-Enthusiasten bereitzustellen, mit der sie detaillierte Informationen über verschiedene Pokémon erhalten können. Hierfür sollen die Nutzer den Namen eines Pokémons suchen und die gewünschten Informationen erhalten. Durch die Nutzung der PokeAPI v2 zielt PokeSearch darauf ab, ein ansprechendes Benutzererlebnis zu bieten, das sowohl die Bedürfnisse von Gelegenheitsnutzern als auch von eingefleischten Pokémon-Fans erfüllt. Das Projekt strebt zudem an, die Reichweite und das Engagement der Pokémon-Community durch eine moderne, webbasierte Schnittstelle zu erweitern.
 
 Wichtige features sind heirbei die folgenden:
--   Suchfunktion: Benutzer können über eine Suchleiste nach Pokémon-Namen suchen.
--   Benutzeroberfläche: Eine benutzerfreundliche Oberfläche, die mit Flutter entwickelt wurde und eine barrierefreie Nutzung auf verschiedenen Geräten gewährleistet.
--   Informationsabruf: Detaillierte Informationen über das Pokémon, einschließlich Bild, Typ, Fähigkeiten und Statistiken, werden von der PokeAPI v2 abgerufen.
+-   **Suchfunktion**: Benutzer können über eine Suchleiste nach Pokémon-Namen suchen.
+-   **Benutzeroberfläche**: Eine benutzerfreundliche Oberfläche, die mit Flutter entwickelt wurde und eine barrierefreie Nutzung auf verschiedenen Geräten gewährleistet.
+-   **Informationsabruf**: Detaillierte Informationen über das Pokémon, einschließlich Bild, Typ, Fähigkeiten und Statistiken, werden von der PokeAPI v2 abgerufen.
 
 Die wesentlichen Anforderung an das Projekt setzen sich wiefolgt zusammen:
--   REST API-Integration: Das Backend muss effizient mit der PokeAPI v2 kommunizieren, um Pokémon-Daten abzurufen und zurückzugeben.
--   Suchfunktion: Das System muss es Benutzern ermöglichen, einen Pokémon-Namen einzugeben und relevante Informationen abzurufen.
--   Datenanzeige: Das Frontend muss das Bild und die Details des Pokémon klar und übersichtlich darstellen.
+-   **REST API-Integration**: Das Backend muss effizient mit der PokeAPI v2 kommunizieren, um Pokémon-Daten abzurufen und zurückzugeben.
+-   **Suchfunktion**: Das System muss es Benutzern ermöglichen, einen Pokémon-Namen einzugeben und relevante Informationen abzurufen.
+-   **Datenanzeige**: Das Frontend muss das Bild und die Details des Pokémon klar und übersichtlich darstellen.
 
 Für ein funktionales System, wird die Architektur mit folgenden Aspekten berücksichtigend entworfen:
--   Performance: Die Anwendung muss schnelle Antwortzeiten bieten, um die Benutzerzufriedenheit zu erhöhen.
--   Skalierbarkeit: Die Architektur sollte eine zunehmende Anzahl von Benutzern ohne Leistungseinbußen unterstützen.
--   Benutzerfreundlichkeit: Die Schnittstelle sollte intuitiv und zugänglich sein, um ein positives Benutzererlebnis zu gewährleisten.
--   Wartbarkeit: Der Code sollte modular und gut dokumentiert sein, um fortlaufende Entwicklung und Wartung zu erleichtern.
--   Zuverlässigkeit: Das System sollte robust sein, um eine konstante Leistung und minimale Ausfallzeiten sicherzustellen.
+-   **Performance**: Die Anwendung muss schnelle Antwortzeiten bieten, um die Benutzerzufriedenheit zu erhöhen.
+-   **Skalierbarkeit**: Die Architektur sollte eine zunehmende Anzahl von Benutzern ohne Leistungseinbußen unterstützen.
+-   **Benutzerfreundlichkeit**: Die Schnittstelle sollte intuitiv und zugänglich sein, um ein positives Benutzererlebnis zu gewährleisten.
+-   **Wartbarkeit**: Der Code soll modular und gut dokumentiert sein, um fortlaufende Entwicklung und Wartung zu erleichtern.
+-   **Zuverlässigkeit**: Das System sollte robust sein, um eine konstante Leistung und minimale Ausfallzeiten sicherzustellen.
 
 In den Lebenszyklus der Software, sind folgende Stakeholder eingebunden, mit ihren jeweiligen Erwartungen:
--   relevant stakeholders and their expectations
--   Endnutzer: Pokémon-Fans, die eine zuverlässige, schnelle und benutzerfreundliche Anwendung erwarten, um Pokémon-Informationen zu suchen und anzuzeigen.
--   Entwickler: Das Entwicklungsteam, das für den Aufbau und die Wartung der Anwendung verantwortlich ist, und eine wartbare und gut dokumentierte Codebasis benötigt.
--   API-Anbieter: Das Team hinter der PokeAPI, das eine verantwortungsvolle und effiziente Nutzung ihres Dienstes erwartet.
+-   **Endnutzer**: Pokémon-Fans, die eine zuverlässige, schnelle und benutzerfreundliche Anwendung erwarten, um Pokémon-Informationen zu suchen und anzuzeigen.
+-   **Entwickler**: Das Entwicklungsteam, das für den Aufbau und die Wartung der Anwendung verantwortlich ist, und eine wartbare und gut dokumentierte Codebasis benötigt.
+-   **API-Anbieter**: Das Team hinter der PokeAPI, das eine verantwortungsvolle und effiziente Nutzung ihres Dienstes erwartet.
 
 ### Requirements Overview {#_requirements_overview}
 

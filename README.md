@@ -92,6 +92,11 @@ Szenarien, geordnet nach Prioritäten.
 
 ### Stakeholder {#_stakeholder}
 
+| Rolle                 | Kontakt          | Erwartungshaltung                                                                 |
+|-----------------------|------------------|----------------------------------------------------------------------------------|
+| Endnutzer           | - | Zuverlässige, schnelle und benutzerfreundliche Anwendung, um Pokémon-Informationen zu suchen und anzuzeigen. |
+| Entwickler            | katharina.winnen@stud.th-rosenheim.de | Wartbare und gut dokumentierte Codebasis, die fortlaufende Entwicklung und Wartung erleichtert. |
+| API-Anbieter          | https://pokeapi.co/about | Verantwortungsvolle und effiziente Nutzung ihres Dienstes.                        |
 ::: formalpara-title
 **Inhalt**
 :::

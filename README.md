@@ -97,47 +97,6 @@ Szenarien, geordnet nach Prioritäten.
 | Endnutzer           | - | Zuverlässige, schnelle und benutzerfreundliche Anwendung, um Pokémon-Informationen zu suchen und anzuzeigen. |
 | Entwickler            | katharina.winnen@stud.th-rosenheim.de | Wartbare und gut dokumentierte Codebasis, die fortlaufende Entwicklung und Wartung erleichtert. |
 | API-Anbieter          | https://pokeapi.co/about | Verantwortungsvolle und effiziente Nutzung ihres Dienstes.                        |
-::: formalpara-title
-**Inhalt**
-:::
-
-Expliziter Überblick über die Stakeholder des Systems -- über alle
-Personen, Rollen oder Organisationen --, die
-
--   die Architektur kennen sollten oder
-
--   von der Architektur überzeugt werden müssen,
-
--   mit der Architektur oder dem Code arbeiten (z.B. Schnittstellen
-    nutzen),
-
--   die Dokumentation der Architektur für ihre eigene Arbeit benötigen,
-
--   Entscheidungen über das System und dessen Entwicklung treffen.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Sie sollten die Projektbeteiligten und -betroffenen kennen, sonst
-erleben Sie später im Entwicklungsprozess Überraschungen. Diese
-Stakeholder bestimmen unter anderem Umfang und Detaillierungsgrad der
-von Ihnen zu leistenden Arbeit und Ergebnisse.
-
-::: formalpara-title
-**Form**
-:::
-
-Tabelle mit Rollen- oder Personennamen, sowie deren Erwartungshaltung
-bezüglich der Architektur und deren Dokumentation.
-
-+-----------------+-----------------+-----------------------------------+
-| Rolle           | Kontakt         | Erwartungshaltung                 |
-+=================+=================+===================================+
-| *\<Rolle-1>*    | *\<Kontakt-1>*  | *\<Erwartung-1>*                  |
-+-----------------+-----------------+-----------------------------------+
-| *\<Rolle-2>*    | *\<Kontakt-2>*  | *\<Erwartung-2>*                  |
-+-----------------+-----------------+-----------------------------------+
 
 ## Randbedingungen {#section-architecture-constraints}
 

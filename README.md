@@ -1,6 +1,6 @@
 # PokeSearch
 
-## Einführung und Ziele {#section-introduction-and-goals}
+## Einführung und Ziele
 
 Das Geschäftsziel von PokeSearch besteht darin, eine intuitive Plattform für Pokémon-Enthusiasten bereitzustellen, mit der sie detaillierte Informationen über verschiedene Pokémon erhalten können. Hierfür sollen die Nutzer den Namen eines Pokémons suchen und die gewünschten Informationen erhalten. Durch die Nutzung der PokeAPI v2 zielt PokeSearch darauf ab, ein ansprechendes Benutzererlebnis zu bieten, das sowohl die Bedürfnisse von Gelegenheitsnutzern als auch von eingefleischten Pokémon-Fans erfüllt. Das Projekt strebt zudem an, die Reichweite und das Engagement der Pokémon-Community durch eine moderne, webbasierte Schnittstelle zu erweitern.
 
@@ -16,10 +16,8 @@ Die wesentlichen Anforderung an das Projekt setzen sich wiefolgt zusammen:
 
 Für ein funktionales System, wird die Architektur mit folgenden Aspekten berücksichtigend entworfen:
 -   **Performance**: Die Anwendung muss schnelle Antwortzeiten bieten, um die Benutzerzufriedenheit zu erhöhen.
--   **Skalierbarkeit**: Die Architektur sollte eine zunehmende Anzahl von Benutzern ohne Leistungseinbußen unterstützen.
 -   **Benutzerfreundlichkeit**: Die Schnittstelle sollte intuitiv und zugänglich sein, um ein positives Benutzererlebnis zu gewährleisten.
 -   **Wartbarkeit**: Der Code soll modular und gut dokumentiert sein, um fortlaufende Entwicklung und Wartung zu erleichtern.
--   **Zuverlässigkeit**: Das System sollte robust sein, um eine konstante Leistung und minimale Ausfallzeiten sicherzustellen.
 
 In den Lebenszyklus der Software, sind folgende Stakeholder eingebunden, mit ihren jeweiligen Erwartungen:
 -   **Endnutzer**: Pokémon-Fans, die eine zuverlässige, schnelle und benutzerfreundliche Anwendung erwarten, um Pokémon-Informationen zu suchen und anzuzeigen.

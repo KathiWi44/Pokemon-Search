@@ -32,7 +32,7 @@ public class Controller {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
             }
         } catch (Exception e) {
-            logger.error("error", e);
+            logger.error("Failed to fetch Pokémon: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve Pokémon data");
         }
     }

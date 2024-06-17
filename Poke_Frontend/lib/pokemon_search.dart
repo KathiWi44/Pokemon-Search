@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pokemon_result.dart';
+import 'package:http/http.dart' as http;
 
 class PokemonSearch extends StatefulWidget {
   const PokemonSearch({Key? key}) : super(key: key);
@@ -11,6 +12,9 @@ class PokemonSearch extends StatefulWidget {
 class _PokemonSearchState extends State<PokemonSearch> {
   final TextEditingController _controller = TextEditingController();
   String? _errorMessage;
+  static http.Client httpClient = http.Client();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +33,7 @@ class _PokemonSearchState extends State<PokemonSearch> {
             ),
             SizedBox(height: 10),
             TextField(
+              key: const Key('pokemon_input'),
               controller: _controller,
               decoration: InputDecoration(
                 hintText: 'Pokemon name',
@@ -38,11 +43,16 @@ class _PokemonSearchState extends State<PokemonSearch> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
+              key: const Key('search_button'),
               onPressed: () {
                 String pokemonName = _controller.text.trim();
-                if (!inputValidation(pokemonName)) {
+                if (pokemonName.isEmpty) {
                   setState(() {
                     _errorMessage = 'Please enter the name of a Pokémon!';
+                  });
+                } else if (!inputValidation(pokemonName)) {
+                  setState(() {
+                    _errorMessage = 'Invalid Pokémon name. Only letters, numbers, and hyphens are allowed!';
                   });
                 } else {
                   String sanitizedName = sanitizeInput(pokemonName);
@@ -61,11 +71,13 @@ class _PokemonSearchState extends State<PokemonSearch> {
   }
 
   bool inputValidation(String name) {
-    return name.isNotEmpty && RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(name);
+    //return name.isNotEmpty && RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(name);
+    return name.isNotEmpty && RegExp(r'^[a-zA-Z0-9\-]+$').hasMatch(name);
   }
 
   String sanitizeInput(String input) {
-    return input.replaceAll(RegExp(r'[^\w\s]+'), '');
+    //return input.replaceAll(RegExp(r'[^\w\s]+'), '');
+    return input.replaceAll(RegExp(r'[^\w\-]+'), '');
   }
 
   @override

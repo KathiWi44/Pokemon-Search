@@ -37,6 +37,7 @@ public class PokeService {
             if (fetchedPokemon != null) {
                 logger.info("Fetched Pokémon {} from API. Saving to database...", name);
                 logPokemonData(fetchedPokemon);
+                fetchedPokemon.setFrontDefault(fetchedPokemon.getSprites().get("front_default").toString());
                 // Save fetched Pokémon data to database
                 repository.save(fetchedPokemon);
             }
@@ -55,6 +56,6 @@ public class PokeService {
                 pokemon.getHeight(),
                 pokemon.getWeight(),
                 pokemon.getOrder(),
-                pokemon.getFrontDefault());// Ensure .getSprites() outputs a readable format
+                pokemon.getFrontDefault());
     }
 }

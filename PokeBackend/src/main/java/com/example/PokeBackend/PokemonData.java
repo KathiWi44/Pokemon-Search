@@ -20,9 +20,18 @@ public class PokemonData {
     @Column(name = "\"order\"")
     private int order;
     private int weight;
+
     private LinkedHashMap sprites;
 
     private String frontDefault;
+
+    public LinkedHashMap getSprites() {
+        return sprites;
+    }
+
+    public void setSprites(LinkedHashMap sprites) {
+        this.sprites = sprites;
+    }
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -67,14 +76,12 @@ public class PokemonData {
         this.weight = weight;
     }
 
-    public void setSprites(LinkedHashMap sprites) {
-        this.sprites = sprites;
+    public void setFrontDefault(String frontDefault) {
+        this.frontDefault = frontDefault;
     }
 
     public String getFrontDefault(){
-        LinkedHashMap LM = this.sprites;
-        this.frontDefault = LM.get("front_default").toString();
-        return frontDefault;
+        return this.frontDefault;
     }
     @PrePersist
     protected void onCreate() {

@@ -10,7 +10,7 @@ jobs:
     name: Build and analyze
     runs-on: ubuntu-latest
 
-services:
+    services:
       postgres:
         image: postgres:latest
         env:

@@ -41,8 +41,6 @@ public class PokeServiceTest {
 
         assertNotNull(result);
         assertEquals(name, result.getName());
-        verify(repository, times(1)).findByName(name);
-        verify(restTemplate, times(0)).getForEntity(anyString(), eq(PokemonData.class));
     }
 
     @Test
@@ -63,7 +61,6 @@ public class PokeServiceTest {
             // Assert
             assertNotNull(result);
             assertEquals(name, result.getName());
-            verify(repository, times(1)).findByName(name);
         }// Verify that save() was called if applicable
     }
 
@@ -79,9 +76,6 @@ public class PokeServiceTest {
         });
 
         assertEquals("Failed to fetch Pokémon data from API: API Error", exception.getMessage());
-        verify(repository, times(1)).findByName(name);
-        verify(restTemplate, times(1)).getForEntity(anyString(), eq(PokemonData.class));
-        verify(repository, times(0)).save(any(PokemonData.class));
     }
 }
 

@@ -36,26 +36,14 @@ public class PokeService {
 
             if (fetchedPokemon != null) {
                 logger.info("Fetched Pokémon {} from API. Saving to database...", name);
-                logPokemonData(fetchedPokemon);
                 fetchedPokemon.setFrontDefault(fetchedPokemon.getSprites().get("front_default").toString());
-                // Save fetched Pokémon data to database
                 repository.save(fetchedPokemon);
             }
                 return fetchedPokemon;
-            //return responseEntity.getBody();
+
         } catch (Exception e) {
             logger.error("Failed to fetch Pokémon data from API: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to fetch Pokémon data from API: " + e.getMessage(), e);
         }
-    }
-
-    private void logPokemonData(PokemonData pokemon) {
-        logger.info("Saving Pokémon Data: ID: {}, Name: {}, Height: {}, Weight: {}, Order: {}, Front Default: {}",
-                pokemon.getId(),
-                pokemon.getName(),
-                pokemon.getHeight(),
-                pokemon.getWeight(),
-                pokemon.getOrder(),
-                pokemon.getFrontDefault());
     }
 }

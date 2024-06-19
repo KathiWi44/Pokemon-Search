@@ -29,8 +29,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+	reports {
+		xml.required = true
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
 }
 
 sonar {
@@ -38,13 +52,13 @@ sonar {
 		property "sonar.projectKey", "KathiWi44_SQS"
 		property "sonar.organization", "kathiwi44"
 		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.qualitygate.wait", true
+		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
 	}
 }
 
-test {
-	useJUnitPlatform()
-	finalizedBy jacocoTestReport
-}
+
+
 
 
 

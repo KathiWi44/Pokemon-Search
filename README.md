@@ -17,7 +17,7 @@ Die wesentlichen Anforderung an das Projekt setzen sich wiefolgt zusammen:
 Für ein funktionales System, wird die Architektur mit folgenden Aspekten berücksichtigend entworfen:
 -   **Performance**: Die Anwendung muss schnelle Antwortzeiten bieten, um die Benutzerzufriedenheit zu erhöhen.
 -   **Benutzerfreundlichkeit**: Die Schnittstelle sollte intuitiv und zugänglich sein, um ein positives Benutzererlebnis zu gewährleisten.
--   **Wartbarkeit**: Der Code soll modular und gut dokumentiert sein, um fortlaufende Entwicklung und Wartung zu erleichtern.
+-   **Zuverlässigkeit**: Das Programm soll konstant funktionieren und bei , sowohl bei internen Fehlern oder Fehlbdeienung durch den User 
 
 In den Lebenszyklus der Software, sind folgende Stakeholder eingebunden, mit ihren jeweiligen Erwartungen:
 -   **Endnutzer**: Pokémon-Fans, die eine zuverlässige, schnelle und benutzerfreundliche Anwendung erwarten, um Pokémon-Informationen zu suchen und anzuzeigen.
@@ -59,36 +59,11 @@ der online-Dokumentation (auf Englisch!).
 
 ### Qualitätsziele {#_qualit_tsziele}
 
-::: formalpara-title
-**Inhalt**
-:::
-
-Die Top-3 bis Top-5 der Qualitätsanforderungen für die Architektur,
-deren Erfüllung oder Einhaltung den maßgeblichen Stakeholdern besonders
-wichtig sind. Gemeint sind hier wirklich Qualitätsziele, die nicht
-unbedingt mit den Zielen des Projekts übereinstimmen. Beachten Sie den
-Unterschied.
-
-Hier ein Überblick möglicher Themen (basierend auf dem ISO 25010
-Standard):
-
-![Kategorien von
-Qualitätsanforderungen](images/01_2_iso-25010-topics-DE.drawio.png)
-
-::: formalpara-title
-**Motivation**
-:::
-
-Weil Qualitätsziele grundlegende Architekturentscheidungen oft
-maßgeblich beeinflussen, sollten Sie die für Ihre Stakeholder relevanten
-Qualitätsziele kennen, möglichst konkret und operationalisierbar.
-
-::: formalpara-title
-**Form**
-:::
-
-Tabellarische Darstellung der Qualitätsziele mit möglichst konkreten
-Szenarien, geordnet nach Prioritäten.
+| Qualitätsziel   | Beschreibung                                                                                       | Szenario                                                                                                   | Umsetzung |
+|-----------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|-----------|
+| **Performance** | Das System muss in der Lage sein, eine hohe Anzahl von Transaktionen in kurzer Zeit zu verarbeiten.  | Das System muss unter hoher Last weiterhin schnell und effizient arbeiten, um die Nutzerzufriedenheit zu gewährleisten. | Die Performance wird durch die Einbindung einer PostgreSQL-Datenbank ermöglicht. Durch das Caching der Pokémon-Daten können bereits gesuchte Pokémon erneut schneller abgerufen werden. Zudem wurden Lasttests mittels Artillery durchgeführt. |
+| **Usability**   | Das System muss einfach und intuitiv bedienbar sein, auch für Benutzer ohne technische Vorkenntnisse. | Das System sollte durch ein benutzerfreundliches Design und klare Anweisungen eine intuitive Bedienung ermöglichen. | Die Sucheingabe ist simpel und minimalistisch gehalten, um Misverständnisse und Verwirrung zu vermeiden. |
+| **Zuverlässigkeit** | Das System muss eine hohe Verfügbarkeit und Fehlertoleranz aufweisen.                             | Das System sollte in der Lage sein, Ausfälle zu minimieren und schnell wieder funktionsfähig zu sein, um kontinuierlichen Betrieb zu gewährleisten.| Für die Zuverässigkeit wurden Lasttests mittels Artillery und diverese Nutzungs-Szenarien in end-to-end Tests implementiert. |
 
 ### Stakeholder {#_stakeholder}
 

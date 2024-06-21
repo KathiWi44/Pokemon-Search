@@ -75,36 +75,15 @@ der online-Dokumentation (auf Englisch!).
 
 ## Randbedingungen {#section-architecture-constraints}
 
-::: formalpara-title
-**Inhalt**
-:::
-
-Randbedingungen und Vorgaben, die ihre Freiheiten bezüglich Entwurf,
-Implementierung oder Ihres Entwicklungsprozesses einschränken. Diese
-Randbedingungen gelten manchmal organisations- oder firmenweit über die
-Grenzen einzelner Systeme hinweg.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Für eine tragfähige Architektur sollten Sie genau wissen, wo Ihre
-Freiheitsgrade bezüglich der Entwurfsentscheidungen liegen und wo Sie
-Randbedingungen beachten müssen. Sie können Randbedingungen vielleicht
-noch verhandeln, zunächst sind sie aber da.
-
-::: formalpara-title
-**Form**
-:::
-
-Einfache Tabellen der Randbedingungen mit Erläuterungen. Bei Bedarf
-unterscheiden Sie technische, organisatorische und politische
-Randbedingungen oder übergreifende Konventionen (beispielsweise
-Programmier- oder Versionierungsrichtlinien, Dokumentations- oder
-Namenskonvention).
-
-Siehe [Randbedingungen](https://docs.arc42.org/section-2/) in der
-online-Dokumentation (auf Englisch!).
+| Randbedingung                  | Beschreibung                                                                                                       |
+|--------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **Projektname**                | PokeSearch                                                                                                         |
+| **Backend**          |  Das Backend fragt für Pokémon-Daten die PokeAPI v2 ab oder nutzt die PostgreSQL-Datenbank, wenn die Daten bereits gecacht wurden. |
+| **Frontend**         | Das Frontend stellt die Suchfunktion mittels einer Suchleiste (Searchbar) dar und leitet den Nutzer nach einer erfolgreichen Suche auf eine Ergebnisseite weiter. |
+| **Containerisierung**          | Frontend und Backend sind dockerisiert                                                                             |
+| **Tests Backend**              | Lasttests und Unittests wurden für das Backend durchgeführt                                                        |
+| **Tests Frontend**             | End-to-End (E2E) Tests wurden für das Frontend durchgeführt                                                        |
+| **Pipeline**                   | Das Bauen des Frontend, des Backend und der Datenbankanbindung werden mittels einer Pipeline automatisiert. Zudem sind die Tests unter anderem statische Codeanalyse, Lasttests und E2E-Tests mit mehreren Szenarien enthalten. |
 
 ## Kontextabgrenzung {#section-system-scope-and-context}
 

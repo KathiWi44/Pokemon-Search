@@ -8,6 +8,10 @@ import jakarta.persistence.*;
 import java.util.LinkedHashMap;
 import java.time.Instant;
 
+/**
+ * This class describes the structure of a PokemonData type. The class contains getter and setters for the attributes.
+ */
+
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PokemonData {

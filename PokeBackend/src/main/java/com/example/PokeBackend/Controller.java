@@ -15,11 +15,24 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/pokemon")
 public class Controller {
-
-    @Autowired
     private PokeService pokemonService;
     private final Logger logger = LoggerFactory.getLogger(Controller.class);
 
+    @Autowired
+    public Controller(PokeService pokemonService){
+        this.pokemonService = pokemonService;
+    }
+
+    /**
+     * Handles GET requests for retrieving Pokemon data by name.
+     * If the Pokemon is found, returns a ResponseEntity with HTTP status OK (200) and the Pokemon data.
+     * If the Pokemon is not found, returns a ResponseEntity with HTTP status NOT_FOUND (404) and an error message.
+     * If an exception occurs during the process, logs the error and returns a ResponseEntity
+     * with HTTP status INTERNAL_SERVER_ERROR (500) and an error message.
+     *
+     * @param name The name of the Pokemon to retrieve.
+     * @return ResponseEntity containing either the Pokemon data or an error message based on the outcome.
+     */
     @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.GET})
     @GetMapping("/{name}")
     public ResponseEntity<?> getPokemonName(@PathVariable String name) {
@@ -36,5 +49,4 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve Pokémon data");
         }
     }
-
 }

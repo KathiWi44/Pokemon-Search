@@ -10,12 +10,8 @@ import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.LinkedHashMap;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +34,10 @@ public class PokeServiceTest {
         // MockitoAnnotations.openMocks(this); // Not needed with @ExtendWith(MockitoExtension.class)
     }
 
+    /**
+     * Test case for getPokemonByName when the Pokemon is fetched successfully from the repository.
+     * Verifies that the method retrieves the Pokemon from the repository without calling the API.
+     */
     @Test
     public void testGetPokemonByName_FetchFromRepository() {
         String name = "pikachu";
@@ -51,15 +51,18 @@ public class PokeServiceTest {
         assertEquals(name, result.getName());
     }
 
+    /**
+     * Test case for getPokemonByName when the Pokemon is fetched successfully from the API.
+     * Verifies that the method calls the API to fetch the Pokemon data when not found in the repository,
+     * saves it to the repository, and returns the fetched Pokemon data.
+     */
     @Test
     public void testGetPokemonByName_FetchFromApi_Success() {
         String name = "bulbasaur";
         String url = "https://pokeapi.co/api/v2/pokemon/" + name;
 
-        // Mocking repository to return null, indicating the Pokémon is not found in the database
         when(repository.findByName(name)).thenReturn(null);
 
-        // Creating a real PokemonData object with necessary properties
         PokemonData mockPokemon = new PokemonData();
         mockPokemon.setName(name);
         mockPokemon.setHeight(7);
@@ -70,19 +73,20 @@ public class PokeServiceTest {
         sprites.put("front_default", "http://example.com/front_default.png");
         mockPokemon.setSprites(sprites);
 
-        // Mocking the behavior of restTemplate.getForEntity to return a ResponseEntity with the mock PokemonData
         when(restTemplate.getForEntity(eq(url), eq(PokemonData.class)))
                 .thenReturn(new ResponseEntity<>(mockPokemon, HttpStatus.OK));
 
-        // Calling the method under test
         PokemonData result = pokeService.getPokemonByName(name);
 
-        // Assertions to verify the results
         assertNotNull(result);
         assertEquals(name, result.getName());
         assertEquals("http://example.com/front_default.png", result.getFrontDefault());
     }
 
+    /**
+     * Test case for getPokemonByName when the API call fails.
+     * Verifies that the method throws a RuntimeException and logs the error message.
+     */
     @Test
     public void testGetPokemonByName_ApiFailure() {
         String name = "charizard";

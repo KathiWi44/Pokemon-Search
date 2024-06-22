@@ -1,8 +1,6 @@
 package com.example.PokeBackend;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,34 +27,38 @@ public class ControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Test case for getPokemonName method in Controller when a valid Pokémon name is provided.
+     * Verifies that the method calls pokemonService.getPokemonByName with the correct name,
+     * returns a ResponseEntity with HttpStatus OK, and contains the fetched Pokémon data.
+     */
     @Test
     public void testGetPokemonName_Valid() {
-        // Arrange
         String name = "bulbasaur";
         PokemonData mockPokemon = new PokemonData();
         mockPokemon.setName(name);
         when(pokemonService.getPokemonByName(name.toLowerCase())).thenReturn(mockPokemon);
 
-        // Act
         ResponseEntity<?> response = controller.getPokemonName(name);
 
-        // Assert
         verify(pokemonService, times(1)).getPokemonByName(name.toLowerCase());
         verifyNoMoreInteractions(pokemonService);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockPokemon, response.getBody());
     }
 
+    /**
+     * Test case for getPokemonName method in Controller when an invalid Pokémon name is provided.
+     * Verifies that the method calls pokemonService.getPokemonByName with the correct name,
+     * returns a ResponseEntity with HttpStatus NOT_FOUND, and contains an error message.
+     */
     @Test
     public void testGetPokemonName_Invalid() {
-        // Arrange
         String name = "bikachu";
         when(pokemonService.getPokemonByName(name.toLowerCase())).thenReturn(null);
 
-        // Act
         ResponseEntity<?> response = controller.getPokemonName(name);
 
-        // Assert
         verify(pokemonService, times(1)).getPokemonByName(name.toLowerCase());
         verifyNoMoreInteractions(pokemonService);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

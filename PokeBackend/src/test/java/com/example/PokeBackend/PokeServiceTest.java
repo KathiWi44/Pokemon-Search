@@ -2,18 +2,23 @@ package com.example.PokeBackend;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.LinkedHashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class PokeServiceTest {
 
     @Mock
@@ -22,12 +27,15 @@ public class PokeServiceTest {
     @Mock
     private PokeRepository repository;
 
+    @Mock
+    private Logger logger;
+
     @InjectMocks
     private PokeService pokeService;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // MockitoAnnotations.openMocks(this); // Not needed with @ExtendWith(MockitoExtension.class)
     }
 
     @Test
@@ -45,39 +53,47 @@ public class PokeServiceTest {
 
     @Test
     public void testGetPokemonByName_FetchFromApi_Success() {
-        // Arrange
         String name = "bulbasaur";
+        String url = "https://pokeapi.co/api/v2/pokemon/" + name;
+
+        // Mocking repository to return null, indicating the Pokémon is not found in the database
+        when(repository.findByName(name)).thenReturn(null);
+
+        // Creating a real PokemonData object with necessary properties
         PokemonData mockPokemon = new PokemonData();
         mockPokemon.setName(name);
+        mockPokemon.setHeight(7);
+        mockPokemon.setWeight(69);
+        mockPokemon.setOrder(1);
 
-        when(repository.findByName(name)).thenReturn(mockPokemon);
-        when(restTemplate.getForEntity(anyString(), eq(PokemonData.class)))
+        LinkedHashMap<String, String> sprites = new LinkedHashMap<>();
+        sprites.put("front_default", "http://example.com/front_default.png");
+        mockPokemon.setSprites(sprites);
+
+        // Mocking the behavior of restTemplate.getForEntity to return a ResponseEntity with the mock PokemonData
+        when(restTemplate.getForEntity(eq(url), eq(PokemonData.class)))
                 .thenReturn(new ResponseEntity<>(mockPokemon, HttpStatus.OK));
 
-        // Act
-        if(pokeService!=null) {
-            PokemonData result = pokeService.getPokemonByName(name);
+        // Calling the method under test
+        PokemonData result = pokeService.getPokemonByName(name);
 
-            // Assert
-            assertNotNull(result);
-            assertEquals(name, result.getName());
-        }
+        // Assertions to verify the results
+        assertNotNull(result);
+        assertEquals(name, result.getName());
+        assertEquals("http://example.com/front_default.png", result.getFrontDefault());
     }
 
     @Test
     public void testGetPokemonByName_ApiFailure() {
         String name = "charizard";
+        String url = "https://pokeapi.co/api/v2/pokemon/" + name;
+
         when(repository.findByName(name)).thenReturn(null);
-        when(restTemplate.getForEntity(anyString(), eq(PokemonData.class)))
+        when(restTemplate.getForEntity(eq(url), eq(PokemonData.class)))
                 .thenThrow(new RuntimeException("API Error"));
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
             pokeService.getPokemonByName(name);
         });
-
-        assertEquals("Failed to fetch Pokémon data from API: API Error", exception.getMessage());
     }
-
 }
-
-

@@ -61,7 +61,7 @@ public class PokeServiceTest {
             // Assert
             assertNotNull(result);
             assertEquals(name, result.getName());
-        }// Verify that save() was called if applicable
+        }
     }
 
     @Test
@@ -77,6 +77,7 @@ public class PokeServiceTest {
 
         assertEquals("Failed to fetch Pokémon data from API: API Error", exception.getMessage());
     }
+
 }
 
 

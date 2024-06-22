@@ -1,0 +1,35 @@
+# Use an official Flutter image as a parent image
+FROM ubuntu:latest
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install necessary dependencies
+RUN apt-get update && \
+    apt-get install -y curl git unzip xz-utils zip libglu1-mesa && \
+    apt-get clean
+
+# Install Flutter SDK
+RUN git clone https://github.com/flutter/flutter.git /flutter
+ENV PATH="/flutter/bin:${PATH}"
+
+# Run basic Flutter doctor to initialize Flutter SDK
+RUN flutter doctor
+
+# Copy the Flutter project to the container
+COPY . .
+
+# Install dependencies
+RUN flutter pub get
+
+# Build the Flutter web application
+RUN flutter build web
+
+# Expose the port that the application runs on
+EXPOSE 8081
+
+# Run the Flutter web server
+CMD ["flutter", "run", "-d", "web", "-p", "8081"]
+
+# Run integration tests
+RUN flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart

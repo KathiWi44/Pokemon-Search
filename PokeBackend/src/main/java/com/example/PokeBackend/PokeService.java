@@ -30,20 +30,15 @@ public class PokeService {
         }
 
         String url = pokeApiUrl + "/pokemon/" + name;
-        try {
-            ResponseEntity<PokemonData> responseEntity = restTemplate.getForEntity(url, PokemonData.class);
-            PokemonData fetchedPokemon = responseEntity.getBody();
 
-            if (fetchedPokemon != null) {
-                logger.info("Fetched Pokémon {} from API. Saving to database...", name);
-                fetchedPokemon.setFrontDefault(fetchedPokemon.getSprites().get("front_default").toString());
-                repository.save(fetchedPokemon);
-            }
-                return fetchedPokemon;
+        ResponseEntity<PokemonData> responseEntity = restTemplate.getForEntity(url, PokemonData.class);
+        PokemonData fetchedPokemon = responseEntity.getBody();
 
-        } catch (Exception e) {
-            logger.error("Failed to fetch Pokémon data from API: {}", e.getMessage(), e);
-            throw new RuntimeException("Failed to fetch Pokémon data from API: " + e.getMessage(), e);
+        if (fetchedPokemon != null) {
+            logger.info("Fetched Pokémon {} from API. Saving to database...", name);
+            fetchedPokemon.setFrontDefault(fetchedPokemon.getSprites().get("front_default").toString());
+            repository.save(fetchedPokemon);
         }
+        return fetchedPokemon;
     }
 }

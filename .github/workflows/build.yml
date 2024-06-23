@@ -77,35 +77,11 @@ jobs:
       - name: List integration tests
         run: ls integration_test/
         working-directory: Poke_Frontend
-
-      - name: Install Chrome and Chromedriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget curl unzip xvfb libxi6 libgconf-2-4
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
-          wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION -O LATEST_RELEASE
-          CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
-          wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv -f chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
-          google-chrome --version
-          chromedriver --version
-
-      - name: Start Xvfb
-        run: |
-          sudo apt-get install -y xvfb
-          Xvfb :99 -screen 0 1920x1080x16 &
-          export DISPLAY=:99
-          sleep 3
         
       - name: Run Flutter integration tests
         env:
           DISPLAY: :99
-        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d linux
+        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d web-server
         working-directory: Poke_Frontend
         
       - name: Install Artillery

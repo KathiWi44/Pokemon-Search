@@ -23,12 +23,10 @@ RUN groupadd -r webapp && useradd -r -g webapp -m -s /bin/bash testuser && \
 
 # Install Flutter SDK
 USER testuser
-RUN git clone https://github.com/flutter/flutter.git /usr/local/lib/flutter && \
-    cd /usr/local/lib/flutter && \
-    git checkout $FLUTTER_VERSION
-
-# Set Git safe directory to avoid ownership issues
-RUN git config --global --add safe.directory /usr/local/lib/flutter
+WORKDIR /usr/local/lib/flutter
+RUN git clone https://github.com/flutter/flutter.git . && \
+    git checkout $FLUTTER_VERSION && \
+    git config --global --add safe.directory /usr/local/lib/flutter
 
 # Update PATH environment variable
 ENV PATH="/usr/local/lib/flutter/bin:${PATH}"
@@ -39,8 +37,11 @@ RUN flutter doctor
 # Switch to root user to copy the project files
 USER root
 
+# Set the working directory in the container
+WORKDIR /app
+
 # Copy the Flutter project to the container
-COPY . /app
+COPY . .
 
 # Change ownership of the project files to testuser
 RUN chown -R testuser:webapp /app
@@ -48,11 +49,8 @@ RUN chown -R testuser:webapp /app
 # Switch back to testuser to install dependencies and build the project
 USER testuser
 
-# Install dependencies
-RUN flutter pub get
-
-# Build the Flutter web application
-RUN flutter build web
+# Install dependencies and build the Flutter web application in a single RUN command
+RUN flutter pub get && flutter build web
 
 # Stage 2: Serve the Flutter web app using nginx
 FROM nginx:1.19.10

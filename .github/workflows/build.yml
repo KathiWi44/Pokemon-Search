@@ -81,12 +81,12 @@ jobs:
         working-directory: PokeBackend
 
       - name: Lint backend Dockerfile
-        uses: hadolint/hadolint-action@v2
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: PokeBackend/Dockerfile.jvm
 
       - name: Lint frontend Dockerfile
-        uses: hadolint/hadolint-action@v2
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: poke_frontend/Dockerfile-flutter
 

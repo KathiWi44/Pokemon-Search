@@ -123,6 +123,7 @@ online-Dokumentation (auf Englisch!).
 
 ### Fachlicher Kontext {#_fachlicher_kontext}
 
+![Kontextabgrenzung](images/Kontextabgrenzung.png)
 ::: formalpara-title
 **Inhalt**
 :::
@@ -155,6 +156,8 @@ Kommunikationsbeziehung, Eingabe, Ausgabe.
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
 ### Technischer Kontext {#_technischer_kontext}
+
+![UML Deployment Diagramm](images/UML_Deployment.png)
 
 ::: formalpara-title
 **Inhalt**
@@ -281,6 +284,7 @@ online-Dokumentation (auf Englisch!).
 
 ### Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
+![Kontextabgrenzung](images/blockstein(1).png)
 An dieser Stelle beschreiben Sie die Zerlegung des Gesamtsystems anhand
 des nachfolgenden Whitebox-Templates. Dieses enthält:
 
@@ -517,6 +521,7 @@ online-Dokumentation (auf Englisch!).
 
 ## Verteilungssicht {#section-deployment-view}
 
+![Kontextabgrenzung](images/Verteilung.png)
 ::: formalpara-title
 **Inhalt**
 :::
@@ -627,6 +632,7 @@ Für jedes Infrastrukturelement kopieren Sie die Struktur aus Ebene 1.
 
 ## Querschnittliche Konzepte {#section-concepts}
 
+![Kontextabgrenzung](images/UML.png)
 ::: formalpara-title
 **Inhalt**
 :::
@@ -764,6 +770,7 @@ Beispiele zum Thema ADR.
 
 ## Qualitätsanforderungen {#section-quality-scenarios}
 
+![Kontextabgrenzung](images/quali.png)
 ::: formalpara-title
 **Inhalt**
 :::

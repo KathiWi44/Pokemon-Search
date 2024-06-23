@@ -94,6 +94,7 @@ jobs:
           sleep 3
         
       - name: Run Flutter integration tests
+        working-directory: Poke_Frontend
         env:
           DISPLAY: :99
         run: |

@@ -87,845 +87,312 @@ der online-Dokumentation (auf Englisch!).
 
 ## Kontextabgrenzung {#section-system-scope-and-context}
 
-::: formalpara-title
-**Inhalt**
-:::
-
-Die Kontextabgrenzung grenzt das System gegen alle Kommunikationspartner
-(Nachbarsysteme und Benutzerrollen) ab. Sie legt damit die externen
-Schnittstellen fest und zeigt damit auch die Verantwortlichkeit (scope)
-Ihres Systems: Welche Verantwortung trägt das System und welche
-Verantwortung übernehmen die Nachbarsysteme?
-
-Differenzieren Sie fachlichen (Ein- und Ausgaben) und technischen
-Kontext (Kanäle, Protokolle, Hardware), falls nötig.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Die fachlichen und technischen Schnittstellen zur Kommunikation gehören
-zu den kritischsten Aspekten eines Systems. Stellen Sie sicher, dass Sie
-diese komplett verstanden haben.
-
-::: formalpara-title
-**Form**
-:::
-
-Verschiedene Optionen:
-
--   Diverse Kontextdiagramme
-
--   Listen von Kommunikationsbeziehungen mit deren Schnittstellen
-
-Siehe [Kontextabgrenzung](https://docs.arc42.org/section-3/) in der
-online-Dokumentation (auf Englisch!).
-
 ### Fachlicher Kontext {#_fachlicher_kontext}
 
 ![Kontextabgrenzung](images/Kontextabgrenzung.png)
-::: formalpara-title
-**Inhalt**
-:::
 
-Festlegung **aller** Kommunikationsbeziehungen (Nutzer, IT-Systeme, ...)
-mit Erklärung der fachlichen Ein- und Ausgabedaten oder Schnittstellen.
-Zusätzlich (bei Bedarf) fachliche Datenformate oder Protokolle der
-Kommunikation mit den Nachbarsystemen.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Alle Beteiligten müssen verstehen, welche fachlichen Informationen mit
-der Umwelt ausgetauscht werden.
-
-::: formalpara-title
-**Form**
-:::
-
-Alle Diagrammarten, die das System als Blackbox darstellen und die
-fachlichen Schnittstellen zu den Nachbarsystemen beschreiben.
-
-Alternativ oder ergänzend können Sie eine Tabelle verwenden. Der Titel
-gibt den Namen Ihres Systems wieder; die drei Spalten sind:
-Kommunikationsbeziehung, Eingabe, Ausgabe.
-
-**\<Diagramm und/oder Tabelle>**
-
-**\<optional: Erläuterung der externen fachlichen Schnittstellen>**
+| Kommunikationsbeziehung | Eingabe           | Ausgabe           |
+|-------------------------|-------------------|-------------------|
+| Benutzer → Frontend     | Pokémon-Name      | Pokémon-Daten     |
+| Frontend → Backend      | HTTP GET Anfrage  | JSON mit Pokémon-Daten |
+| Backend → Externe API   | Pokémon-Name      | JSON mit Pokémon-Daten |
 
 ### Technischer Kontext {#_technischer_kontext}
 
 ![UML Deployment Diagramm](images/UML_Deployment.png)
 
-::: formalpara-title
-**Inhalt**
-:::
+| Technischer Kanal | Eingabe           | Ausgabe           |
+|-------------------------|-------------------|-------------------|
+| Benutzer → dockerisiertes Frontend     | Pokémon-Name      | Pokémon-Daten     |
+| dockerisiertes Frontend → dockerisiertes Backend     | HTTP GET Anfrage  | JSON mit Pokémon-Daten |
+| dockerisiertes Backend → Externe API   | Pokémon-Name      | JSON mit Pokémon-Daten |
+| dockerisiertes Backend → PostgresSQL pokemon   | Pokémon-Name      | JSON mit Pokémon-Daten |
 
-Technische Schnittstellen (Kanäle, Übertragungsmedien) zwischen dem
-System und seiner Umwelt. Zusätzlich eine Erklärung (*mapping*), welche
-fachlichen Ein- und Ausgaben über welche technischen Kanäle fließen.
+#### Funktionalität des Backends:
 
-::: formalpara-title
-**Motivation**
-:::
+Das Backend-System für die Pokémon-Abfrage hat verschiedene Aufgaben, die in unterschiedlichen Klassen organisiert sind. Beim Start wird die Spring Boot-Anwendung durch die `PokeBackendApplication`-Klasse initialisiert.
 
-Viele Stakeholder treffen Architekturentscheidungen auf Basis der
-technischen Schnittstellen des Systems zu seinem Kontext.
+Der `Controller` ist für die Verarbeitung von HTTP GET-Anfragen zuständig. Er bietet den Endpunkt `/pokemon/{name}` an, über den der Benutzer Pokémon-Daten abrufen kann. Anfragen an diesen Endpunkt werden an den `PokeService` weitergeleitet.
 
-Insbesondere bei der Entwicklung von Infrastruktur oder Hardware sind
-diese technischen Schnittstellen durchaus entscheidend.
+Der `PokeService` enthält die Geschäftslogik des Systems. Er prüft, ob die angeforderten Pokémon-Daten in der Datenbank vorhanden sind. Wenn dies nicht der Fall ist, sendet er eine Anfrage an die externe PokeAPI, um die Daten zu erhalten. Diese neuen Daten werden anschließend in der Datenbank gespeichert und an den `Controller` zurückgegeben.
 
-::: formalpara-title
-**Form**
-:::
+Der Zugriff auf die Datenbank erfolgt über die `PokeRepository`-Schnittstelle, die CRUD-Operationen (Create, Read, Update, Delete) auf der `PokemonData`-Entität durchführt. Die `PokemonData`-Klasse definiert die Struktur der gespeicherten Pokémon-Daten und enthält Felder wie `id`, `name`, `height`, `order`, `weight`, `sprites`, `frontDefault` und `createdAt`.
 
-Beispielsweise UML Deployment-Diagramme mit den Kanälen zu
-Nachbarsystemen, begleitet von einer Tabelle, die Kanäle auf
-Ein-/Ausgaben abbildet.
+Externe API-Anfragen werden mit `RestTemplate` gesendet, welches in der `Config`-Klasse konfiguriert und als Bean bereitgestellt wird.
 
-**\<Diagramm oder Tabelle>**
+#### Schnittstellen:
 
-**\<optional: Erläuterung der externen technischen Schnittstellen>**
+##### HTTP-Endpunkte:
+- **GET /pokemon/{name}**:
+  - Diese Schnittstelle ermöglicht es, die Daten eines Pokémon basierend auf seinem Namen abzurufen.
+  - **Eingabe**: Pokémon-Name (als Pfadparameter)
+  - **Ausgabe**: Pokémon-Daten im JSON-Format
 
-**\<Mapping fachliche auf technische Schnittstellen>**
+##### Interne Schnittstellen:
+- **PokeService**:
+  - **Methode**: `getPokemonByName(String name)`
+    - **Eingabe**: Pokémon-Name (String)
+    - **Ausgabe**: `PokemonData`-Objekt
+- **PokeRepository**:
+  - **Methode**: `findByName(String name)`
+    - **Eingabe**: Pokémon-Name (String)
+    - **Ausgabe**: `PokemonData`-Objekt oder `null`, wenn das Pokémon nicht vorhanden ist
+
+##### Externe Schnittstellen:
+- **PokeAPI**:
+  - **URL**: `https://pokeapi.co/api/v2/pokemon/{name}`
+  - **Methode**: `GET`
+  - **Eingabe**: Pokémon-Name (als Pfadparameter)
+  - **Ausgabe**: Pokémon-Daten im JSON-Format
 
 ## Lösungsstrategie {#section-solution-strategy}
 
-::: formalpara-title
-**Inhalt**
-:::
+### Technologieentscheidungen
+Für das Backend wurde Spring Boot als Framework ausgewählt. Spring Boot bietet eine breite Palette an Features, die die Entwicklung von robusten und skalierbaren Anwendungen unterstützen. Es integriert sich nahtlos mit Container-Technologien wie Docker und ist ideal für Microservice-Architekturen geeignet, was den Anforderungen an Performance und Skalierbarkeit gerecht wird. Flutter wurde als Frontend-Framework gewählt, da es eine leistungsfähige Plattform für die Entwicklung moderner, reaktionsschneller Benutzeroberflächen bietet und eine konsistente Benutzererfahrung über verschiedene Geräte hinweg ermöglicht. PostgreSQL dient als Datenbank und wurde aufgrund seiner Zuverlässigkeit, Leistungsfähigkeit und Erweiterbarkeit ausgewählt. Die Datenbank wird als Cache für die Daten der externen PokeAPI genutzt. Zur Beschaffung von Pokémon-Informationen wird die PokeAPI v2 verwendet, da sie eine umfassende Datenquelle für die benötigten Informationen bietet.
 
-Kurzer Überblick über die grundlegenden Entscheidungen und
-Lösungsansätze, die Entwurf und Implementierung des Systems prägen.
-Hierzu gehören:
+### Top-Level-Zerlegung
+Das System folgt einer Client-Server-Architektur, bei der das Frontend und das Backend lose gekoppelt sind und jeweils spezifische Funktionalitäten bereitstellen. Diese Architektur ermöglicht eine einfachere Wartung, Skalierung und Weiterentwicklung der einzelnen Komponenten. Zudem werden sowohl das Frontend als auch das Backend als Docker-Container bereitgestellt, was isolierte Laufzeitumgebungen und Plattformunabhängigkeit sicherstellt und die Bereitstellung und Skalierung mithilfe von Docker-Compose erleichtert.
 
--   Technologieentscheidungen
+### Qualitätsanforderungen
+Das PokeSearch-System wurde entwickelt, um den Anforderungen an Performance, Usability und Zuverlässigkeit gerecht zu werden
 
--   Entscheidungen über die Top-Level-Zerlegung des Systems,
-    beispielsweise die Verwendung gesamthaft prägender Entwurfs- oder
-    Architekturmuster,
+Um eine hohe Anzahl von Transaktionen in kurzer Zeit verarbeiten zu können, wurde eine PostgreSQL-Datenbank integriert. Diese ermöglicht es, durch das Caching der Pokémon-Daten bereits gesuchte Pokémon erneut schneller abzurufen. Zusätzlich wurden Lasttests mittels Artillery durchgeführt, um sicherzustellen, dass das System auch unter hoher Last schnell und effizient arbeitet. Diese Maßnahmen gewährleisten, dass das System selbst bei hoher Nutzerlast performant bleibt und die Zufriedenheit der Benutzer sichergestellt ist.
 
--   Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen
-    sowie
+Ein weiteres zentrales Qualitätsziel ist die Benutzerfreundlichkeit. Das System muss einfach und intuitiv bedienbar sein, auch für Benutzer ohne technische Vorkenntnisse. Die Sucheingabe wurde daher simpel und minimalistisch gestaltet, um Missverständnisse und Verwirrung zu vermeiden. Die Benutzeroberfläche wurde mit Flutter entwickelt, um eine konsistente und reaktionsschnelle Benutzererfahrung auf verschiedenen Geräten zu gewährleisten. Um die Benutzerfreundlichkeit zu überprüfen, wurden End-to-End-Tests durchgeführt, die sicherstellen, dass die Anwendung intuitiv und leicht bedienbar ist.
 
--   relevante organisatorische Entscheidungen, beispielsweise für
-    bestimmte Entwicklungsprozesse oder Delegation bestimmter Aufgaben
-    an andere Stakeholder.
+Zuverlässigkeit ist ein weiterer kritischer Aspekt des Systems. Es ist essentiell, dass das System eine hohe Verfügbarkeit und Fehlertoleranz aufweist. Um dies zu erreichen, wurden umfangreiche Lasttests mit Artillery sowie diverse Nutzungsszenarien in End-to-End-Tests implementiert. Diese Tests stellen sicher, dass das System stabil und fehlerfrei läuft, selbst bei unerwarteten Eingaben und hoher Last. Die Containerisierung mittels Docker sorgt zudem für isolierte Laufzeitumgebungen und erleichtert die Bereitstellung und Skalierung der Anwendung. Eine CI/CD-Pipeline mithilfe von GitHub Actions automatisiert den gesamten Prozess vom Code-Commit bis zur Bereitstellung. Diese Pipeline führt eine Reihe automatisierter Tests durch, einschließlich Unit-, Integrations- und End-to-End-Tests, und gewährleistet eine kontinuierliche Integration und Auslieferung neuer Funktionen. Nach erfolgreichem Bestehen aller Tests werden Docker-Container erstellt und in einer Registry gespeichert, sodass sie in verschiedene Umgebungen bereitgestellt werden können. Diese Maßnahmen stellen sicher, dass das System stabil und zuverlässig arbeitet und kontinuierlich verbessert wird.
 
-::: formalpara-title
-**Motivation**
-:::
+Durch diese umfassenden Maßnahmen zur Sicherstellung von Performance, Usability und Zuverlässigkeit erfüllt das PokeSearch-System die hohen Anforderungen und bietet eine leistungsstarke, benutzerfreundliche und stabile Plattform für die Abfrage von Pokémon-Daten.
 
-Diese wichtigen Entscheidungen bilden wesentliche „Eckpfeiler" der
-Architektur. Von ihnen hängen viele weitere Entscheidungen oder
-Implementierungsregeln ab.
-
-::: formalpara-title
-**Form**
-:::
-
-Fassen Sie die zentralen Entwurfsentscheidungen **kurz** zusammen.
-Motivieren Sie, ausgehend von Aufgabenstellung, Qualitätszielen und
-Randbedingungen, was Sie entschieden haben und warum Sie so entschieden
-haben. Vermeiden Sie redundante Beschreibungen und verweisen Sie eher
-auf weitere Ausführungen in Folgeabschnitten.
-
-Siehe [Lösungsstrategie](https://docs.arc42.org/section-4/) in der
-online-Dokumentation (auf Englisch!).
+### organisatorische Entscheidungen
+Ein wesentlicher Bestandteil der organisatorischen Entscheidungen in diesem Projekt ist die Implementierung einer CI/CD-Pipeline mithilfe von GitHub Actions, um für eine hohe Qualität und Zuverlässigkeit des Codes zu sorgen. Diese Pipeline automatisiert den gesamten Prozess vom Code-Commit bis zur Bereitstellung und gewährleistet eine kontinuierliche Integration und Auslieferung neuer Funktionen und Verbesserungen. Bei jedem Push oder Pull-Request wird der Code automatisch gebaut und durch eine Reihe automatisierter Tests, einschließlich Unit-, Integrations- und End-to-End-Tests, geprüft. Zusätzlich werden Frontend-Tests durchgeführt, um sicherzustellen, dass die Benutzeroberfläche den Erwartungen entspricht. ArchUnit-Tests werden im Backend verwendet, um die Einhaltung von Architekturregeln zu überprüfen. Die Dockerfiles werden in der Pipeline gelintet, um sicherzustellen, dass sie syntaktisch korrekt und effizient geschrieben sind. SonarCloud ergänzt als statisches Code-Analyse-Tool die Tests, um sicherzustellen, dass der Code den Qualitätsstandards entspricht. Nach erfolgreichem Bestehen aller Tests werden Docker-Container erstellt und in einer Registry gespeichert. Diese Container können dann in die verschiedenen Umgebungen mithilfe der Docker-Compose-Datei bereitgestellt werden. Um die Leistungsfähigkeit und Stabilität der Anwendung unter hoher Last zu gewährleisten, werden zudem automatisierte Lasttests durchgeführt.
 
 ## Bausteinsicht {#section-building-block-view}
 
-::: formalpara-title
-**Inhalt**
-:::
-
-Die Bausteinsicht zeigt die statische Zerlegung des Systems in Bausteine
-(Module, Komponenten, Subsysteme, Klassen, Schnittstellen, Pakete,
-Bibliotheken, Frameworks, Schichten, Partitionen, Tiers, Funktionen,
-Makros, Operationen, Datenstrukturen, ...) sowie deren Abhängigkeiten
-(Beziehungen, Assoziationen, ...)
-
-Diese Sicht sollte in jeder Architekturdokumentation vorhanden sein. In
-der Analogie zum Hausbau bildet die Bausteinsicht den *Grundrissplan*.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Behalten Sie den Überblick über den Quellcode, indem Sie die statische
-Struktur des Systems durch Abstraktion verständlich machen.
-
-Damit ermöglichen Sie Kommunikation auf abstrakterer Ebene, ohne zu
-viele Implementierungsdetails offenlegen zu müssen.
-
-::: formalpara-title
-**Form**
-:::
-
-Die Bausteinsicht ist eine hierarchische Sammlung von Blackboxen und
-Whiteboxen (siehe Abbildung unten) und deren Beschreibungen.
-
-![Hierarchie in der Bausteinsicht](images/05_building_blocks-DE.png)
-
-**Ebene 1** ist die Whitebox-Beschreibung des Gesamtsystems, zusammen
-mit Blackbox-Beschreibungen der darin enthaltenen Bausteine.
-
-**Ebene 2** zoomt in einige Bausteine der Ebene 1 hinein. Sie enthält
-somit die Whitebox-Beschreibungen ausgewählter Bausteine der Ebene 1,
-jeweils zusammen mit Blackbox-Beschreibungen darin enthaltener
-Bausteine.
-
-**Ebene 3** zoomt in einige Bausteine der Ebene 2 hinein, usw.
-
-Siehe [Bausteinsicht](https://docs.arc42.org/section-5/) in der
-online-Dokumentation (auf Englisch!).
-
 ### Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
-![Kontextabgrenzung](images/blockstein(1).png)
-An dieser Stelle beschreiben Sie die Zerlegung des Gesamtsystems anhand
-des nachfolgenden Whitebox-Templates. Dieses enthält:
+![Whitebox](images/blockstein(1).png)
 
--   Ein Übersichtsdiagramm
+#### Context
 
--   die Begründung dieser Zerlegung
+| Name            | Verantwortung                                                                                      |
+|-----------------|----------------------------------------------------------------------------------------------------|
+| Pokémon Search  | - Bietet eine Plattform für Benutzer, um detaillierte Informationen über Pokémon zu suchen und anzuzeigen. <br> - Integriert Frontend, Backend und Datenbank, um eine nahtlose Benutzererfahrung zu gewährleisten. <br> - Nutzt die PokeAPI v2, um aktuelle Pokémon-Daten abzurufen und speichert diese in der Datenbank zur Wiederverwendung. |
+| PokeAPI v2      | - Externe API, die detaillierte Informationen über Pokémon bereitstellt, einschließlich Bilder, Typen, Fähigkeiten und Statistiken. <br> - Dient als primäre Datenquelle für die Pokémon-Daten, die im System verwendet werden. <br> - Bietet Endpunkte für den Zugriff auf verschiedene Pokémon-Daten, die von der Anwendung abgerufen werden können. |
 
--   Blackbox-Beschreibungen der hier enthaltenen Bausteine. Dafür haben
-    Sie verschiedene Optionen:
+#### System
 
-    -   in *einer* Tabelle, gibt einen kurzen und pragmatischen
-        Überblick über die enthaltenen Bausteine sowie deren
-        Schnittstellen.
+| Name       | Verantwortung                                                                                      |
+|------------|----------------------------------------------------------------------------------------------------|
+| Frontend   | - Stellt die Benutzeroberfläche bereit, ermöglicht die Suche nach Pokémon und zeigt die Ergebnisse an. <br> - Entwickelt mit Flutter für eine konsistente und reaktionsschnelle Benutzererfahrung. <br> - Enthält die Suchleiste und Ergebnisseite, die die Pokémon-Daten anzeigen. |
+| Backend    | - Verarbeitet Anfragen vom Frontend, führt die Geschäftslogik aus und kommuniziert mit der Datenbank und externen APIs. <br> - Entwickelt mit Spring Boot, um eine robuste und skalierbare Serverlogik zu bieten. <br> - Beinhaltet Endpunkte zur Abfrage der Pokémon-Daten und speichert gecachte Daten in der Datenbank. |
+| Datenbank  | - Speichert gecachte Pokémon-Daten, um wiederholte Anfragen effizienter zu bearbeiten. <br> - Verwendet PostgreSQL aufgrund seiner Zuverlässigkeit, Leistungsfähigkeit und Erweiterbarkeit. |
 
-    -   als Liste von Blackbox-Beschreibungen der Bausteine, gemäß dem
-        Blackbox-Template (siehe unten). Diese Liste können Sie, je nach
-        Werkzeug, etwa in Form von Unterkapiteln (Text), Unter-Seiten
-        (Wiki) oder geschachtelten Elementen (Modellierungswerkzeug)
-        darstellen.
+#### Backend
 
--   (optional:) wichtige Schnittstellen, die nicht bereits im
-    Blackbox-Template eines der Bausteine erläutert werden, aber für das
-    Verständnis der Whitebox von zentraler Bedeutung sind. Aufgrund der
-    vielfältigen Möglichkeiten oder Ausprägungen von Schnittstellen
-    geben wir hierzu kein weiteres Template vor. Im schlimmsten Fall
-    müssen Sie Syntax, Semantik, Protokolle, Fehlerverhalten,
-    Restriktionen, Versionen, Qualitätseigenschaften, notwendige
-    Kompatibilitäten und vieles mehr spezifizieren oder beschreiben. Im
-    besten Fall kommen Sie mit Beispielen oder einfachen Signaturen
-    zurecht.
+| Name                  | Verantwortung                                      |
+|-----------------------|----------------------------------------------------|
+| PokeBackendApplication| Startet die Spring Boot-Anwendung                  |
+| Controller            | Verarbeitet HTTP-Anfragen und ruft PokeService auf |
+| PokeService           | Führt die Geschäftslogik aus, kommuniziert mit der Datenbank und externen APIs |
+| PokeRepository        | Schnittstelle zur Datenbank, führt CRUD-Operationen durch |
+| PokemonData           | Entitätsklasse, die die Struktur der Pokémon-Daten definiert |
+| Config                | Stellt Beans bereit, z.B. RestTemplate             |
 
-***\<Übersichtsdiagramm>***
+#### Frontend
 
-Begründung
-
-:   *\<Erläuternder Text>*
-
-Enthaltene Bausteine
-
-:   *\<Beschreibung der enthaltenen Bausteine (Blackboxen)>*
-
-Wichtige Schnittstellen
-
-:   *\<Beschreibung wichtiger Schnittstellen>*
-
-Hier folgen jetzt Erläuterungen zu Blackboxen der Ebene 1.
-
-Falls Sie die tabellarische Beschreibung wählen, so werden Blackboxen
-darin nur mit Name und Verantwortung nach folgendem Muster beschrieben:
-
-+-----------------------+-----------------------------------------------+
-| **Name**              | **Verantwortung**                             |
-+=======================+===============================================+
-| *\<Blackbox 1>*       |  *\<Text>*                                    |
-+-----------------------+-----------------------------------------------+
-| *\<Blackbox 2>*       |  *\<Text>*                                    |
-+-----------------------+-----------------------------------------------+
-
-Falls Sie die ausführliche Liste von Blackbox-Beschreibungen wählen,
-beschreiben Sie jede wichtige Blackbox in einem eigenen
-Blackbox-Template. Dessen Überschrift ist jeweils der Namen dieser
-Blackbox.
-
-#### \<Name Blackbox 1> {#__name_blackbox_1}
-
-Beschreiben Sie die \<Blackbox 1> anhand des folgenden
-Blackbox-Templates:
-
--   Zweck/Verantwortung
-
--   Schnittstelle(n), sofern diese nicht als eigenständige
-    Beschreibungen herausgezogen sind. Hierzu gehören eventuell auch
-    Qualitäts- und Leistungsmerkmale dieser Schnittstelle.
-
--   (Optional) Qualitäts-/Leistungsmerkmale der Blackbox, beispielsweise
-    Verfügbarkeit, Laufzeitverhalten o. Ä.
-
--   (Optional) Ablageort/Datei(en)
-
--   (Optional) Erfüllte Anforderungen, falls Sie Traceability zu
-    Anforderungen benötigen.
-
--   (Optional) Offene Punkte/Probleme/Risiken
-
-*\<Zweck/Verantwortung>*
-
-*\<Schnittstelle(n)>*
-
-*\<(Optional) Qualitäts-/Leistungsmerkmale>*
-
-*\<(Optional) Ablageort/Datei(en)>*
-
-*\<(Optional) Erfüllte Anforderungen>*
-
-*\<(optional) Offene Punkte/Probleme/Risiken>*
-
-#### \<Name Blackbox 2> {#__name_blackbox_2}
-
-*\<Blackbox-Template>*
-
-#### \<Name Blackbox n> {#__name_blackbox_n}
-
-*\<Blackbox-Template>*
-
-#### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
-
-...
-
-#### \<Name Schnittstelle m> {#__name_schnittstelle_m}
-
-### Ebene 2 {#_ebene_2}
-
-Beschreiben Sie den inneren Aufbau (einiger) Bausteine aus Ebene 1 als
-Whitebox.
-
-Welche Bausteine Ihres Systems Sie hier beschreiben, müssen Sie selbst
-entscheiden. Bitte stellen Sie dabei Relevanz vor Vollständigkeit.
-Skizzieren Sie wichtige, überraschende, riskante, komplexe oder
-besonders volatile Bausteine. Normale, einfache oder standardisierte
-Teile sollten Sie weglassen.
-
-#### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
-
-...zeigt das Innenleben von *Baustein 1*.
-
-*\<Whitebox-Template>*
-
-#### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
-
-*\<Whitebox-Template>*
-
-...
-
-#### Whitebox *\<Baustein m>* {#_whitebox_emphasis_baustein_m_emphasis}
-
-*\<Whitebox-Template>*
-
-### Ebene 3 {#_ebene_3}
-
-Beschreiben Sie den inneren Aufbau (einiger) Bausteine aus Ebene 2 als
-Whitebox.
-
-Bei tieferen Gliederungen der Architektur kopieren Sie diesen Teil von
-arc42 für die weiteren Ebenen.
-
-#### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
-
-...zeigt das Innenleben von *Baustein x.1*.
-
-*\<Whitebox-Template>*
-
-#### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
-
-*\<Whitebox-Template>*
-
-#### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
-
-*\<Whitebox-Template>*
+| Name               | Verantwortung                                                   |
+|--------------------|-----------------------------------------------------------------|
+| main.dart          | Startet die Flutter-Anwendung und zeigt die `PokemonSearch`-Seite |
+| PokemonSearch      | Stellt die Suchleiste dar und verwaltet Eingabe und Navigation                       |
+| PokemonResult      | StatelessWidget, zeigt die Ergebnisse der Pokémon-Suche an und ruft Daten vom Backend ab      |
+| PokemonData        | Datenklasse, die die Struktur der empfangenen Pokémon-Daten definiert |
 
 ## Laufzeitsicht {#section-runtime-view}
 
-::: formalpara-title
-**Inhalt**
-:::
+### Szenario: Benutzer gibt Pokémon-Namen ein und erhält Daten von der API
+![API-Call](images/API_call.png)
+- Benutzer gibt den Namen eines Pokémon in die Suchleiste ein und drückt den Suchbutton.
+- Frontend sendet eine HTTP GET-Anfrage an das Backend mit dem eingegebenen Pokémon-Namen.
+- Backend` prüft, ob die Daten des angeforderten Pokémon in der PostgreSQL-Datenbank vorhanden sind.
+  - **Daten vorhanden**:
+    - Pokémon-Daten werden aus der Datenbank abgerufen.
+    - Daten werden an den Backend-Controller zurückgegeben.
+  - **Daten nicht vorhanden**:
+    - Backend sendet eine Anfrage an die externe PokeAPI v2.
+    - PokeAPI v2 liefert die angeforderten Pokémon-Daten zurück.
+    - Abgerufene Pokémon-Daten werden in der Datenbank gespeichert.
+    - Daten werden an das Backend zurückgegeben.
+- Backend sendet die Pokémon-Daten als HTTP-Antwort an das Frontend.
+- Frontend zeigt die erhaltenen Pokémon-Daten dem Benutzer an.
 
-Diese Sicht erklärt konkrete Abläufe und Beziehungen zwischen Bausteinen
-in Form von Szenarien aus den folgenden Bereichen:
+### Szenario: Pokémon-Daten sind in der Datenbank gecacht
+![API-Call](images/cache.png)
+- Benutzer gibt den Namen eines Pokémon in die Suchleiste ein und drückt den Suchbutton.
+- Frontend sendet eine HTTP GET-Anfrage an das Backend mit dem eingegebenen Pokémon-Namen.
+- Backend empfängt die Anfrage und leitet sie an den `PokeService` weiter.
+- Backend prüft, ob die Daten des angeforderten Pokémon in der PostgreSQL-Datenbank vorhanden sind.
+  - **Daten vorhanden**:
+    - Pokémon-Daten werden aus der Datenbank abgerufen.
+- Backend sendet die Pokémon-Daten als HTTP-Antwort an das Frontend.
+- Frontend zeigt die erhaltenen Pokémon-Daten dem Benutzer an.
 
--   Wichtige Abläufe oder *Features*: Wie führen die Bausteine der
-    Architektur die wichtigsten Abläufe durch?
 
--   Interaktionen an kritischen externen Schnittstellen: Wie arbeiten
-    Bausteine mit Nutzern und Nachbarsystemen zusammen?
-
--   Betrieb und Administration: Inbetriebnahme, Start, Stop.
-
--   Fehler- und Ausnahmeszenarien
-
-Anmerkung: Das Kriterium für die Auswahl der möglichen Szenarien (d.h.
-Abläufe) des Systems ist deren Architekturrelevanz. Es geht nicht darum,
-möglichst viele Abläufe darzustellen, sondern eine angemessene Auswahl
-zu dokumentieren.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Sie sollten verstehen, wie (Instanzen von) Bausteine(n) Ihres Systems
-ihre jeweiligen Aufgaben erfüllen und zur Laufzeit miteinander
-kommunizieren.
-
-Nutzen Sie diese Szenarien in der Dokumentation hauptsächlich für eine
-verständlichere Kommunikation mit denjenigen Stakeholdern, die die
-statischen Modelle (z.B. Bausteinsicht, Verteilungssicht) weniger
-verständlich finden.
-
-::: formalpara-title
-**Form**
-:::
-
-Für die Beschreibung von Szenarien gibt es zahlreiche
-Ausdrucksmöglichkeiten. Nutzen Sie beispielsweise:
-
--   Nummerierte Schrittfolgen oder Aufzählungen in Umgangssprache
-
--   Aktivitäts- oder Flussdiagramme
-
--   Sequenzdiagramme
-
--   BPMN (Geschäftsprozessmodell und -notation) oder EPKs
-    (Ereignis-Prozessketten)
-
--   Zustandsautomaten
-
--   ...
-
-Siehe [Laufzeitsicht](https://docs.arc42.org/section-6/) in der
-online-Dokumentation (auf Englisch!).
-
-### *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
-
--   \<hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
-
--   \<hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem
-    Szenario erläutern>
-
-### *\<Bezeichnung Laufzeitszenario 2>* {#__emphasis_bezeichnung_laufzeitszenario_2_emphasis}
-
-...
-
-### *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
-
-...
+### Szenario: API gibt keine Pokémon-Daten zurück und liefert stattdessen Fehlermeldungen
+![API-Call](images/API_call_fail.png)
+- Benutzer gibt den Namen eines Pokémon in die Suchleiste ein und drückt den Suchbutton.
+- Frontend sendet eine HTTP GET-Anfrage an das Backend mit dem eingegebenen Pokémon-Namen.
+- Backend empfängt die Anfrage und leitet sie an den `PokeService` weiter.
+- `Backend` prüft, ob die Daten des angeforderten Pokémon in der PostgreSQL-Datenbank vorhanden sind.
+  - **Daten nicht vorhanden**:
+    -  PokeAPI v2 gibt keine Daten zurück und liefert stattdessen eine Fehlermeldung.
+    - Backend fängt die Fehlermeldung ab und erstellt eine entsprechende Antwort.
+    - Backend gibt eine Fehlermeldung an den Backend-Controller zurück.
+- Backend sendet die Fehlermeldung als HTTP-Antwort an das Frontend.
+- Frontend zeigt die erhaltene Fehlermeldung dem Benutzer an.
 
 ## Verteilungssicht {#section-deployment-view}
 
+### Infrastruktur {#_infrastruktur_ebene_1}
+
 ![Kontextabgrenzung](images/Verteilung.png)
-::: formalpara-title
-**Inhalt**
-:::
 
-Die Verteilungssicht beschreibt:
+Das Frontend und Backend wurden mittels Docker containerisiert, um eine konsistente und skalierbare Umgebung bereitzustellen.
 
-1.  die technische Infrastruktur, auf der Ihr System ausgeführt wird,
-    mit Infrastrukturelementen wie Standorten, Umgebungen, Rechnern,
-    Prozessoren, Kanälen und Netztopologien sowie sonstigen
-    Bestandteilen, und
+#### Frontend (Flutter + NGINX)
 
-2.  die Abbildung von (Software-)Bausteinen auf diese Infrastruktur.
+Das Flutter-Frontend wird in einem Docker-Container betrieben, der NGINX als Webserver verwendet. NGINX ist für seine hohe Leistung und geringe Ressourcennutzung bekannt, was die schnelle Auslieferung von statischen Inhalten ermöglicht. Der NGINX-Server läuft auf Port 80, wodurch das Frontend einfach über den Standard-HTTP-Port zugänglich ist.
 
-Häufig laufen Systeme in unterschiedlichen Umgebungen, beispielsweise
-Entwicklung-/Test- oder Produktionsumgebungen. In solchen Fällen sollten
-Sie alle relevanten Umgebungen aufzeigen.
+#### Backend (Spring Boot + JVM)
 
-Nutzen Sie die Verteilungssicht insbesondere dann, wenn Ihre Software
-auf mehr als einem Rechner, Prozessor, Server oder Container abläuft
-oder Sie Ihre Hardware sogar selbst konstruieren.
+Das Backend, entwickelt mit Spring Boot, läuft in einem JVM-basierten Docker-Container. Spring Boot wurde aufgrund seiner umfangreichen Features und seiner Eignung für die Entwicklung robuster und skalierbarer Anwendungen ausgewählt. Der Backend-Server läuft auf Port 8080, was ein gängiger Standardport für Webanwendungen ist.
 
-Aus Softwaresicht genügt es, auf die Aspekte zu achten, die für die
-Softwareverteilung relevant sind. Insbesondere bei der
-Hardwareentwicklung kann es notwendig sein, die Infrastruktur mit
-beliebigen Details zu beschreiben.
+#### Docker Compose
 
-::: formalpara-title
-**Motivation**
-:::
+Docker Compose wird verwendet, um die Konfiguration und Orchestrierung der verschiedenen Docker-Container zu verwalten. Mit Docker Compose kann das gesamte System, bestehend aus Frontend, Backend und weiteren Diensten, mit einem einzigen Befehl gestartet werden. Dies stellt sicher, dass alle Container in einer einheitlichen und kontrollierten Umgebung laufen.
 
-Software läuft nicht ohne Infrastruktur. Diese zugrundeliegende
-Infrastruktur beeinflusst Ihr System und/oder querschnittliche
-Lösungskonzepte, daher müssen Sie diese Infrastruktur kennen.
+#### Vorteile der Entscheidungen
 
-::: formalpara-title
-**Form**
-:::
-
-Das oberste Verteilungsdiagramm könnte bereits in Ihrem technischen
-Kontext enthalten sein, mit Ihrer Infrastruktur als EINE Blackbox. Jetzt
-zoomen Sie in diese Infrastruktur mit weiteren Verteilungsdiagrammen
-hinein:
-
--   Die UML stellt mit Verteilungsdiagrammen (Deployment diagrams) eine
-    Diagrammart zur Verfügung, um diese Sicht auszudrücken. Nutzen Sie
-    diese, evtl. auch geschachtelt, wenn Ihre Verteilungsstruktur es
-    verlangt.
-
--   Falls Ihre Infrastruktur-Stakeholder andere Diagrammarten
-    bevorzugen, die beispielsweise Prozessoren und Kanäle zeigen, sind
-    diese hier ebenfalls einsetzbar.
-
-Siehe [Verteilungssicht](https://docs.arc42.org/section-7/) in der
-online-Dokumentation (auf Englisch!).
-
-### Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
-
-An dieser Stelle beschreiben Sie (als Kombination von Diagrammen mit
-Tabellen oder Texten):
-
--   die Verteilung des Gesamtsystems auf mehrere Standorte, Umgebungen,
-    Rechner, Prozessoren o. Ä., sowie die physischen Verbindungskanäle
-    zwischen diesen,
-
--   wichtige Begründungen für diese Verteilungsstruktur,
-
--   Qualitäts- und/oder Leistungsmerkmale dieser Infrastruktur,
-
--   Zuordnung von Softwareartefakten zu Bestandteilen der Infrastruktur
-
-Für mehrere Umgebungen oder alternative Deployments kopieren Sie diesen
-Teil von arc42 für alle wichtigen Umgebungen/Varianten.
-
-***\<Übersichtsdiagramm>***
-
-Begründung
-
-:   *\<Erläuternder Text>*
-
-Qualitäts- und/oder Leistungsmerkmale
-
-:   *\<Erläuternder Text>*
-
-Zuordnung von Bausteinen zu Infrastruktur
-
-:   *\<Beschreibung der Zuordnung>*
-
-### Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
-
-An dieser Stelle können Sie den inneren Aufbau (einiger)
-Infrastrukturelemente aus Ebene 1 beschreiben.
-
-Für jedes Infrastrukturelement kopieren Sie die Struktur aus Ebene 1.
-
-#### *\<Infrastrukturelement 1>* {#__emphasis_infrastrukturelement_1_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-#### *\<Infrastrukturelement 2>* {#__emphasis_infrastrukturelement_2_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-...
-
-#### *\<Infrastrukturelement n>* {#__emphasis_infrastrukturelement_n_emphasis}
-
-*\<Diagramm + Erläuterungen>*
+- **Konsistenz und Skalierbarkeit**: Durch die Containerisierung mit Docker wird eine konsistente Laufzeitumgebung sichergestellt, was die Skalierbarkeit und Verwaltung der Anwendung erleichtert.
+- **Leistungsfähigkeit**: NGINX ermöglicht eine schnelle und effiziente Auslieferung des Frontends, während Spring Boot die robusten und skalierbaren Backend-Dienste bereitstellt.
+- **Einfache Orchestrierung**: Docker Compose ermöglicht eine einfache Verwaltung und Orchestrierung aller Container, was den Entwicklungs- und Bereitstellungsprozess erheblich vereinfacht.
 
 ## Querschnittliche Konzepte {#section-concepts}
 
 ![Kontextabgrenzung](images/UML.png)
-::: formalpara-title
-**Inhalt**
-:::
-
-Dieser Abschnitt beschreibt übergreifende, prinzipielle Regelungen und
-Lösungsansätze, die an mehreren Stellen (=*querschnittlich*) relevant
-sind.
-
-Solche Konzepte betreffen oft mehrere Bausteine. Dazu können vielerlei
-Themen gehören, beispielsweise:
-
--   Modelle, insbesondere fachliche Modelle
-
--   Architektur- oder Entwurfsmuster
-
--   Regeln für den konkreten Einsatz von Technologien
-
--   prinzipielle --- meist technische --- Festlegungen übergreifender
-    Art
-
--   Implementierungsregeln
-
-::: formalpara-title
-**Motivation**
-:::
-
-Konzepte bilden die Grundlage für *konzeptionelle Integrität*
-(Konsistenz, Homogenität) der Architektur und damit eine wesentliche
-Grundlage für die innere Qualität Ihrer Systeme.
-
-Manche dieser Themen lassen sich nur schwer als Baustein in der
-Architektur unterbringen (z.B. das Thema „Sicherheit").
-
-::: formalpara-title
-**Form**
-:::
-
-Kann vielfältig sein:
-
--   Konzeptpapiere mit beliebiger Gliederung,
-
--   übergreifende Modelle/Szenarien mit Notationen, die Sie auch in den
-    Architektursichten nutzen,
-
--   beispielhafte Implementierung speziell für technische Konzepte,
-
--   Verweise auf „übliche" Nutzung von Standard-Frameworks
-    (beispielsweise die Nutzung von Hibernate als Object/Relational
-    Mapper).
-
-::: formalpara-title
-**Struktur**
-:::
-
-Eine mögliche (nicht aber notwendige!) Untergliederung dieses
-Abschnittes könnte wie folgt aussehen (wobei die Zuordnung von Themen zu
-den Gruppen nicht immer eindeutig ist):
-
--   Fachliche Konzepte
-
--   User Experience (UX)
-
--   Sicherheitskonzepte (Safety und Security)
-
--   Architektur- und Entwurfsmuster
-
--   Unter-der-Haube
-
--   Entwicklungskonzepte
-
--   Betriebskonzepte
-
-![Possible topics for crosscutting
-concepts](images/08-Crosscutting-Concepts-Structure-DE.png)
-
-Siehe [Querschnittliche Konzepte](https://docs.arc42.org/section-8/) in
-der online-Dokumentation (auf Englisch).
-
-### *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
-
-*\<Erklärung>*
-
-### *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
-
-*\<Erklärung>*
-
-...
-
-### *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
-
-*\<Erklärung>*
 
 ## Architekturentscheidungen {#section-design-decisions}
 
-::: formalpara-title
-**Inhalt**
-:::
+### Flutter
+Flutter wurde gewählt, weil es eine leistungsfähige Plattform für die Entwicklung moderner, reaktionsschneller Benutzeroberflächen bietet und eine konsistente Benutzererfahrung über verschiedene Geräte hinweg ermöglicht.
 
-Wichtige, teure, große oder riskante Architektur- oder
-Entwurfsentscheidungen inklusive der jeweiligen Begründungen. Mit
-\"Entscheidungen\" meinen wir hier die Auswahl einer von mehreren
-Alternativen unter vorgegebenen Kriterien.
+### Spring Boot
+Spring Boot wurde aufgrund seiner umfangreichen Features und seiner Eignung für die Entwicklung robuster und skalierbarer Anwendungen ausgewählt. Es bietet eine nahtlose Integration mit Container-Technologien wie Docker.
 
-Wägen Sie ab, inwiefern Sie Entscheidungen hier zentral beschreiben,
-oder wo eine lokale Beschreibung (z.B. in der Whitebox-Sicht von
-Bausteinen) sinnvoller ist. Vermeiden Sie Redundanz. Verweisen Sie evtl.
-auf Abschnitt 4, wo schon grundlegende strategische Entscheidungen
-beschrieben wurden.
+### SonarCloud
+SonarCloud wurde integriert, um die Qualität des Codes kontinuierlich zu überwachen und sicherzustellen, dass der Code den höchsten Standards entspricht. Es bietet umfassende statische Code-Analysen und hilft, potenzielle Probleme frühzeitig zu erkennen.
 
-::: formalpara-title
-**Motivation**
-:::
+### JUnit
+JUnit wurde als Testframework gewählt, um die Entwicklung und Durchführung von Unit-Tests zu erleichtern. Es unterstützt die Sicherstellung der Codequalität und der Funktionalität durch automatisierte Tests.
 
-Stakeholder des Systems sollten wichtige Entscheidungen verstehen und
-nachvollziehen können.
+### Artillery
+Artillery wurde für Lasttests verwendet, um die Performance des Systems unter hoher Last zu prüfen und sicherzustellen, dass die Anwendung den Anforderungen an die Skalierbarkeit gerecht wird.
 
-::: formalpara-title
-**Form**
-:::
+### PostgreSQL
+PostgreSQL wurde aufgrund seiner Zuverlässigkeit, Leistungsfähigkeit und Erweiterbarkeit als Datenbank ausgewählt. Es dient als Speichersystem für gecachte Pokémon-Daten, um die Effizienz der Datenabfragen zu erhöhen.
 
-Verschiedene Möglichkeiten:
+### Hadolint
+Hadolint wurde integriert, um die Dockerfiles zu linten und sicherzustellen, dass sie syntaktisch korrekt und effizient geschrieben sind. Es hilft, Best Practices für Docker-Container zu gewährleisten.
 
--   ADR ([Documenting Architecture
-    Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions))
-    für jede wichtige Entscheidung
+### Docker
+Docker wurde gewählt, um eine konsistente und isolierte Laufzeitumgebung für die Anwendung bereitzustellen. Es erleichtert die Bereitstellung und Skalierung der Anwendung auf verschiedenen Plattformen.
 
--   Liste oder Tabelle, nach Wichtigkeit und Tragweite der
-    Entscheidungen geordnet
+### GitHub Actions
+GitHub Actions wurde für die Implementierung einer CI/CD-Pipeline verwendet. Es automatisiert den gesamten Prozess vom Code-Commit bis zur Bereitstellung, einschließlich der Durchführung von Tests und der Bereitstellung von Docker-Containern.
 
--   ausführlicher in Form einzelner Unterkapitel je Entscheidung
+### Docker Compose
+Docker Compose wurde verwendet, um die Konfiguration und Orchestrierung der verschiedenen Docker-Container zu verwalten. Es ermöglicht das einfache Starten und Verwalten aller Container mit einem einzigen Befehl.
 
-Siehe [Architekturentscheidungen](https://docs.arc42.org/section-9/) in
-der arc42 Dokumentation (auf Englisch!). Dort finden Sie Links und
-Beispiele zum Thema ADR.
+### Flutter integration_test
+Die `integration_test`-Bibliothek von Flutter wurde gewählt, um End-to-End-Tests für das Flutter-Frontend durchzuführen. Diese Bibliothek ermöglicht es, das gesamte System zu testen, einschließlich der Benutzeroberfläche und der Interaktion mit dem Backend, um sicherzustellen, dass alle Komponenten nahtlos zusammenarbeiten und eine optimale Benutzererfahrung bieten.
+
+### Backend
+| Tool                  | Version              |
+|--------------------------------------|----------------------|
+| Java                                 | 17                   |
+| Spring Boot                          | 3.2.4                |
+| Gradle        | 8.8               |
+
+### Frontend
+| Tool                  | Version              |
+|--------------------------------------|----------------------|
+| Flutter                                | 3.22.2                  |
+
+### Tests
+| Tool                  | Version              |
+|--------------------------------------|----------------------|
+| JUnit                              | 5                  |
+| Artillery                          | latest               |
 
 ## Qualitätsanforderungen {#section-quality-scenarios}
 
-![Kontextabgrenzung](images/quali.png)
-::: formalpara-title
-**Inhalt**
-:::
-
-Dieser Abschnitt enthält möglichst alle Qualitätsanforderungen als
-Qualitätsbaum mit Szenarien. Die wichtigsten davon haben Sie bereits in
-Abschnitt 1.2 (Qualitätsziele) hervorgehoben.
-
-Nehmen Sie hier auch Qualitätsanforderungen geringerer Priorität auf,
-deren Nichteinhaltung oder -erreichung geringe Risiken birgt.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Weil Qualitätsanforderungen die Architekturentscheidungen oft maßgeblich
-beeinflussen, sollten Sie die für Ihre Stakeholder relevanten
-Qualitätsanforderungen kennen, möglichst konkret und operationalisiert.
-
-::: formalpara-title
-**Weiterführende Informationen**
-:::
-
-Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
-der online-Dokumentation (auf Englisch!).
-
 ### Qualitätsbaum {#_qualit_tsbaum}
 
-::: formalpara-title
-**Inhalt**
-:::
-
-Der Qualitätsbaum (à la ATAM) mit Qualitätsszenarien an den Blättern.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Die mit Prioritäten versehene Baumstruktur gibt Überblick über
-die --- oftmals zahlreichen --- Qualitätsanforderungen.
-
--   Baumartige Verfeinerung des Begriffes „Qualität", mit „Qualität"
-    oder „Nützlichkeit" als Wurzel.
-
--   Mindmap mit Qualitätsoberbegriffen als Hauptzweige
-
-In jedem Fall sollten Sie hier Verweise auf die Qualitätsszenarien des
-folgenden Abschnittes aufnehmen.
+![Qualität](images/quali.png)
 
 ### Qualitätsszenarien {#_qualit_tsszenarien}
 
-::: formalpara-title
-**Inhalt**
-:::
+# Qualitätsziele und Maßnahmen
 
-Konkretisierung der (in der Praxis oftmals vagen oder impliziten)
-Qualitätsanforderungen durch (Qualitäts-)Szenarien.
+| Attribut       | Szenario                                                                                               | Maßnahme                                      |
+|----------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| **Usability**  | Nutzungsszenario: Benutzer können intuitiv nach Pokémon suchen und die Ergebnisse anzeigen lassen.      | Benutzerfreundliches UI-Design, einfache Navigation, End-to-End-Tests mit Flutter integration_test |
+|                | Änderungsszenario: Verbesserungen in der Benutzeroberfläche werden kontinuierlich umgesetzt.            | Benutzerfeedback einholen und umsetzen, UI-Tests |
+|                | Nutzungsszenario: Das System zeigt relevante Informationen zu Pokémon klar und verständlich an.         | Übersichtliches Layout, konsistente Darstellung der Daten |
+|                | Änderungsszenario: Neue Nutzeranforderungen an das Design werden kontinuierlich integriert.              | Regelmäßige Überprüfung und Anpassung an Nutzeranforderungen |
+| **Performance**| Nutzungsszenario: Das System muss unter hoher Last schnell und effizient arbeiten.                      | Lasttests mit Artillery                       |
+|                | Änderungsszenario: Anpassung der Systemkonfiguration zur Verbesserung der Leistung.                      | Performance-Optimierungen und erneute Lasttests |
+|                | Nutzungsszenario: Das System soll auch bei vielen gleichzeitigen Anfragen stabil bleiben.                | Caching von Daten mit PostgreSQL              |
+|                | Änderungsszenario: Änderungen im Code oder neue Funktionen erfordern erneute Performance-Tests.          | Wiederholte Performance-Tests                 |
+| **Reliability**| Nutzungsszenario: Um die Zuverlässigkeit zu gewährleisten, wird das System umfassend getestet.           | Unit-Tests, Integrationstests, End-to-End-Tests, Lasttests |
+|                | Änderungsszenario: Regelmäßige Aktualisierung des Testkonzepts bei einer Änderung im Code.               | Umfassende Testabdeckung                      |
+|                | Nutzungsszenario: Das System bleibt unter hoher Last stabil und reagiert effizient.                      | Lasttests mit Artillery                       |
+|                | Änderungsszenario: Neue Anforderungen erfordern Anpassungen und erneute Tests der Systemstabilität.      | Anpassung der Tests                           |
 
-Diese Szenarien beschreiben, was beim Eintreffen eines Stimulus auf ein
-System in bestimmten Situationen geschieht.
-
-Wesentlich sind zwei Arten von Szenarien:
-
--   Nutzungsszenarien (auch bekannt als Anwendungs- oder
-    Anwendungsfallszenarien) beschreiben, wie das System zur Laufzeit
-    auf einen bestimmten Auslöser reagieren soll. Hierunter fallen auch
-    Szenarien zur Beschreibung von Effizienz oder Performance. Beispiel:
-    Das System beantwortet eine Benutzeranfrage innerhalb einer Sekunde.
-
--   Änderungsszenarien beschreiben eine Modifikation des Systems oder
-    seiner unmittelbaren Umgebung. Beispiel: Eine zusätzliche
-    Funktionalität wird implementiert oder die Anforderung an ein
-    Qualitätsmerkmal ändert sich.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Szenarien operationalisieren Qualitätsanforderungen und machen deren
-Erfüllung mess- oder entscheidbar.
-
-Insbesondere wenn Sie die Qualität Ihrer Architektur mit Methoden wie
-ATAM überprüfen wollen, bedürfen die in Abschnitt 1.2 genannten
-Qualitätsziele einer weiteren Präzisierung bis auf die Ebene von
-diskutierbaren und nachprüfbaren Szenarien.
-
-::: formalpara-title
-**Form**
-:::
-
-Entweder tabellarisch oder als Freitext.
 
 ## Risiken und technische Schulden {#section-technical-risks}
 
-::: formalpara-title
-**Inhalt**
-:::
+# Technische Schulden und Maßnahmen
 
-Eine nach Prioritäten geordnete Liste der erkannten Architekturrisiken
-und/oder technischen Schulden.
-
-> Risikomanagement ist Projektmanagement für Erwachsene.
->
-> ---  Tim Lister Atlantic Systems Guild
-
-Unter diesem Motto sollten Sie Architekturrisiken und/oder technische
-Schulden gezielt ermitteln, bewerten und Ihren Management-Stakeholdern
-(z.B. Projektleitung, Product-Owner) transparent machen.
-
-::: formalpara-title
-**Form**
-:::
-
-Liste oder Tabelle von Risiken und/oder technischen Schulden, eventuell
-mit vorgeschlagenen Maßnahmen zur Risikovermeidung, Risikominimierung
-oder dem Abbau der technischen Schulden.
-
-Siehe [Risiken und technische
-Schulden](https://docs.arc42.org/section-11/) in der
-online-Dokumentation (auf Englisch!).
+| Risiko/Technische Schuld                        | Beschreibung                                                                                           | Maßnahme zur Risikovermeidung/Risikominimierung/Abbau der technischen Schuld | Priorität |
+|-------------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|-----------|
+| Umgang mit sensiblen Daten                      | Es muss sichergestellt werden, dass sensible Daten sicher gehandhabt werden, idealerweise mit Umgebungsvariablen. | Nutzung von Umgebungsvariablen für alle sensiblen Daten, Einführung von Sicherheitsrichtlinien und regelmäßigen Überprüfungen | Hoch      |
+| Keine Integrationstests für das Backend         | Es fehlen Integrationstests für das Backend, was zu unerkannten Fehlern bei der Interaktion der Komponenten führen kann. | Einführung und Implementierung von Integrationstests für das Backend | Hoch      |
+| Keine Unit-Tests für das Frontend               | Es fehlen Unit-Tests für das Frontend, was zu einer geringeren Testabdeckung und möglichen Fehlern führen kann. | Einführung und Implementierung von Unit-Tests für das Frontend | Mittel     |
+| Abhängigkeit von externer API                   | Das System ist stark von der Verfügbarkeit und Zuverlässigkeit der externen PokeAPI abhängig.         | Einführung von Caching-Mechanismen, Implementierung von Fallback-Strategien und regelmäßigen Verfügbarkeitsprüfungen der API | Hoch      |
 
 ## Glossar {#section-glossary}
 
-::: formalpara-title
-**Inhalt**
-:::
+# Glossar
 
-Die wesentlichen fachlichen und technischen Begriffe, die Stakeholder im
-Zusammenhang mit dem System verwenden.
+| Begriff         | Definition                                                                                           |
+|-----------------|------------------------------------------------------------------------------------------------------------|
+| API             | Application Programming Interface, eine Schnittstelle, die es ermöglicht, dass verschiedene Softwareanwendungen miteinander kommunizieren. |
+| Artillery       | Ein Lasttest-Tool, das verwendet wird, um die Performance von Systemen unter hoher Last zu testen.         |
+| Caching         | Eine Technik zur Speicherung häufig abgerufener Daten, um die Antwortzeiten zu verkürzen und die Leistung zu verbessern. |
+| CI/CD Pipeline  | Continuous Integration/Continuous Deployment Pipeline, die den Prozess der Integration und Bereitstellung von Code automatisiert. |
+| Docker          | Eine Plattform zur Containerisierung von Anwendungen, die es ermöglicht, Software in isolierten Umgebungen auszuführen. |
+| Docker Compose  | Ein Werkzeug zur Definition und Ausführung mehrerer Docker-Container, die zusammen eine Anwendung bilden.   |
+| End-to-End Test (E2E Test) | Ein Test, der die gesamte Anwendung von Anfang bis Ende überprüft, um sicherzustellen, dass alle Komponenten zusammenarbeiten. |
+| Flutter         | Ein UI-Toolkit von Google zur Entwicklung nativ kompilierter Anwendungen für Mobilgeräte, Web und Desktop aus einer einzigen Codebasis. |
+| GitHub Actions  | Ein CI/CD-Tool, das in GitHub integriert ist und automatisierte Workflows für den Softwareentwicklungsprozess ermöglicht. |
+| Hadolint        | Ein Linter für Dockerfiles, der sicherstellt, dass sie syntaktisch korrekt und effizient geschrieben sind.  |
+| JUnit           | Ein Testframework für Java, das die Entwicklung und Durchführung von Unit-Tests erleichtert.                |
+| Load Test       | Ein Test, der die Performance eines Systems unter einer bestimmten Last prüft, um sicherzustellen, dass es effizient arbeitet. |
+| PostgreSQL      | Ein leistungsfähiges, objektrelationales Datenbankmanagementsystem, das für seine Zuverlässigkeit und Erweiterbarkeit bekannt ist. |
+| PokeAPI v2      | Eine externe API, die detaillierte Informationen über Pokémon bereitstellt, einschließlich Bilder, Typen, Fähigkeiten und Statistiken. |
+| SonarCloud      | Ein Tool zur statischen Code-Analyse, das die Codequalität überwacht und sicherstellt, dass der Code den höchsten Standards entspricht. |
+| Spring Boot     | Ein Framework für die Entwicklung robuster und skalierbarer Java-Anwendungen, das eine schnelle Entwicklung und einfache Konfiguration ermöglicht. |
+| Unit Test       | Ein Test, der einzelne Komponenten oder Funktionen einer Anwendung isoliert überprüft, um deren korrekte Funktionalität sicherzustellen. |
 
-Nutzen Sie das Glossar ebenfalls als Übersetzungsreferenz, falls Sie in
-mehrsprachigen Teams arbeiten.
-
-::: formalpara-title
-**Motivation**
-:::
-
-Sie sollten relevante Begriffe klar definieren, so dass alle Beteiligten
-
--   diese Begriffe identisch verstehen, und
-
--   vermeiden, mehrere Begriffe für die gleiche Sache zu haben.
-
-Zweispaltige Tabelle mit \<Begriff> und \<Definition>.
-
-Eventuell weitere Spalten mit Übersetzungen, falls notwendig.
-
-Siehe [Glossar](https://docs.arc42.org/section-12/) in der
-online-Dokumentation (auf Englisch!).
-
-+-----------------------+-----------------------------------------------+
-| Begriff               | Definition                                    |
-+=======================+===============================================+
-| *\<Begriff-1>*        | *\<Definition-1>*                             |
-+-----------------------+-----------------------------------------------+
-| *\<Begriff-2*         | *\<Definition-2>*                             |
-+-----------------------+-----------------------------------------------+
 

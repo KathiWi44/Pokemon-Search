@@ -29,28 +29,88 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available
+          
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+          
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+          
       - name: Build and run tests
         run: cd PokeBackend && ./gradlew build jacocoTestReport
+        
       - name: SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: cd PokeBackend && ./gradlew sonar
         continue-on-error: true
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'latest'
+        
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: poke_frontend
+
+      - name: Run Flutter integration tests
+        run: flutter drive --target=integration_test/poke_search_test.dart
+        working-directory: poke_frontend
+        
+      - name: Install Artillery
+        run: npm install -g artillery
+
+      - name: Run Artillery Load Test
+        run: artillery run artillery.yml
+        working-directory: PokeBackend
+
+      - name: Lint backend Dockerfile
+        uses: hadolint/hadolint-action@v2
+        with:
+          dockerfile: PokeBackend/Dockerfile.jvm
+
+      - name: Lint frontend Dockerfile
+        uses: hadolint/hadolint-action@v2
+        with:
+          dockerfile: poke_frontend/Dockerfile-flutter
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push backend Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./PokeBackend
+          file: ./PokeBackend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/pokemon-backend:latest
+
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./poke_frontend
+          file: ./poke_frontend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/pokemon-frontend:latest

@@ -110,6 +110,7 @@ jobs:
         working-directory: Poke_Frontend
         env:
           DISPLAY: :99
+          BASE_URL: http://localhost:8081
         run: |
           flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d chrome
         

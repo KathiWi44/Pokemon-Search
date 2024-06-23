@@ -79,14 +79,16 @@ jobs:
         working-directory: Poke_Frontend
 
       - name: Fetch Chrome version
-        id: chrome-version
-        run: echo "chrome_version=$(google-chrome --version | grep -oP '\d+')" >> $GITHUB_ENV
+        id: get-chrome-version
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
+          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
+          echo "CHROME_MAJOR_VERSION=$CHROME_MAJOR_VERSION" >> $GITHUB_ENV
 
       - name: Install Matching Chromedriver
         run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-          wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION -O chromedriver_version
-          CHROMEDRIVER_VERSION=$(cat chromedriver_version)
+          wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${{ env.CHROME_MAJOR_VERSION }} -O LATEST_RELEASE
+          CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
           wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv -f chromedriver /usr/local/bin/chromedriver

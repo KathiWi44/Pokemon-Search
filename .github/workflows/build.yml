@@ -79,7 +79,7 @@ jobs:
         working-directory: Poke_Frontend
 
       - name: Run Flutter integration tests
-        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart
+        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d chrome
         working-directory: Poke_Frontend
         
       - name: Install Artillery

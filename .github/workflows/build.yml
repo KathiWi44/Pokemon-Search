@@ -86,6 +86,14 @@ jobs:
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
           google-chrome --version
 
+      - name: Install Chromedriver
+        run: |
+          wget -N 	https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.63/linux64/chrome-linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv -f chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
+          chromedriver --version
+
       - name: Start Xvfb
         run: |
           sudo apt-get install -y xvfb

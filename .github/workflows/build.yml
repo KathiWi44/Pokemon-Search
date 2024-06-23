@@ -83,7 +83,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./PokeBackend
-          file: ./PokeBackend/Dockerfile
+          file: ./PokeBackend/Dockerfile.jvm
           push: true
           tags: ${{ secrets.DOCKER_USER }}/pokemon-backend:latest
 
@@ -91,7 +91,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./Poke_Frontend
-          file: ./Poke_Frontend/Dockerfile
+          file: ./Poke_Frontend/Dockerfile-flutter
           push: true
           tags: ${{ secrets.DOCKER_USER }}/pokemon-frontend:latest
 

@@ -70,6 +70,14 @@ jobs:
         run: flutter pub get
         working-directory: Poke_Frontend
 
+      - name: Check outdated dependencies
+        run: flutter pub outdated
+        working-directory: Poke_Frontend
+
+      - name: List integration tests
+        run: ls integration_test/
+        working-directory: Poke_Frontend
+
       - name: Run Flutter integration tests
         run: flutter drive --target=integration_test/poke_search_test.dart
         working-directory: Poke_Frontend

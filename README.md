@@ -2,7 +2,7 @@
 
 ## Einführung und Ziele
 
-Das Geschäftsziel von PokeSearch besteht darin, eine intuitive Plattform für Pokémon-Enthusiasten bereitzustellen, mit der sie detaillierte Informationen über verschiedene Pokémon erhalten können. Hierfür sollen die Nutzer den Namen eines Pokémons suchen und die gewünschten Informationen erhalten. Durch die Nutzung der PokeAPI v2 zielt PokeSearch darauf ab, ein ansprechendes Benutzererlebnis zu bieten, das sowohl die Bedürfnisse von Gelegenheitsnutzern als auch von eingefleischten Pokémon-Fans erfüllt. Das Projekt strebt zudem an, die Reichweite und das Engagement der Pokémon-Community durch eine moderne, webbasierte Schnittstelle zu erweitern.
+Das Ziel von PokeSearch besteht darin, eine intuitive Plattform für Leute bereitzustellen, die sich über Pokémons informieren wollen. Hierfür sollen die Nutzer den Namen eines Pokémons suchen und die gewünschten Informationen erhalten.
 
 Wichtige features sind heirbei die folgenden:
 -   **Suchfunktion**: Benutzer können über eine Suchleiste nach Pokémon-Namen suchen.
@@ -24,38 +24,9 @@ In den Lebenszyklus der Software, sind folgende Stakeholder eingebunden, mit ihr
 -   **Entwickler**: Das Entwicklungsteam, das für den Aufbau und die Wartung der Anwendung verantwortlich ist, und eine wartbare und gut dokumentierte Codebasis benötigt.
 -   **API-Anbieter**: Das Team hinter der PokeAPI, das eine verantwortungsvolle und effiziente Nutzung ihres Dienstes erwartet.
 
-### Aufgabenstellung {#_aufgabenstellung}
+### Aufgabenstellung
 
-::: formalpara-title
-**Inhalt**
-:::
-
-Kurzbeschreibung der fachlichen Aufgabenstellung, treibenden Kräfte,
-Extrakt (oder Abstract) der Anforderungen. Verweis auf (hoffentlich
-vorliegende) Anforderungsdokumente (mit Versionsbezeichnungen und
-Ablageorten).
-
-::: formalpara-title
-**Motivation**
-:::
-
-Aus Sicht der späteren Nutzung ist die Unterstützung einer fachlichen
-Aufgabe oder Verbesserung der Qualität der eigentliche Beweggrund, ein
-neues System zu schaffen oder ein bestehendes zu modifizieren.
-
-::: formalpara-title
-**Form**
-:::
-
-Kurze textuelle Beschreibung, eventuell in tabellarischer Use-Case Form.
-Sofern vorhanden, sollte die Aufgabenstellung Verweise auf die
-entsprechenden Anforderungsdokumente enthalten.
-
-Halten Sie diese Auszüge so knapp wie möglich und wägen Sie Lesbarkeit
-und Redundanzfreiheit gegeneinander ab.
-
-Siehe [Anforderungen und Ziele](https://docs.arc42.org/section-1/) in
-der online-Dokumentation (auf Englisch!).
+Es soll ein Microservice entwickelt werden, welcher an eine externe API und eine Datenbank angebunden ist. Zudem soll die Anwendung durch Automatisierung, durch Unit und Integration Tests und weitere Features erweitert werden, welche die jeweiligen Qualitätsziele erfüllen.
 
 ### Qualitätsziele {#_qualit_tsziele}
 
@@ -65,7 +36,7 @@ der online-Dokumentation (auf Englisch!).
 | **Usability**   | Das System muss einfach und intuitiv bedienbar sein, auch für Benutzer ohne technische Vorkenntnisse. | Das System sollte durch ein benutzerfreundliches Design und klare Anweisungen eine intuitive Bedienung ermöglichen. | Die Sucheingabe ist simpel und minimalistisch gehalten, um Misverständnisse und Verwirrung zu vermeiden. |
 | **Zuverlässigkeit** | Das System muss eine hohe Verfügbarkeit und Fehlertoleranz aufweisen.                             | Das System sollte in der Lage sein, Ausfälle zu minimieren und schnell wieder funktionsfähig zu sein, um kontinuierlichen Betrieb zu gewährleisten.| Für die Zuverässigkeit wurden Lasttests mittels Artillery und diverese Nutzungs-Szenarien in end-to-end Tests implementiert. |
 
-### Stakeholder {#_stakeholder}
+### Stakeholder
 
 | Rolle                 | Kontakt          | Erwartungshaltung                                                                 |
 |-----------------------|------------------|----------------------------------------------------------------------------------|
@@ -73,7 +44,7 @@ der online-Dokumentation (auf Englisch!).
 | Entwickler            | katharina.winnen@stud.th-rosenheim.de | Wartbare und gut dokumentierte Codebasis, die fortlaufende Entwicklung und Wartung erleichtert. |
 | API-Anbieter          | https://pokeapi.co/about | Verantwortungsvolle und effiziente Nutzung ihres Dienstes.                        |
 
-## Randbedingungen {#section-architecture-constraints}
+## Randbedingungen
 
 | Randbedingung                  | Beschreibung                                                                                                       |
 |--------------------------------|-------------------------------------------------------------------------------------------------------------------|
@@ -85,9 +56,9 @@ der online-Dokumentation (auf Englisch!).
 | **Tests Frontend**             | End-to-End (E2E) Tests wurden für das Frontend durchgeführt                                                        |
 | **Pipeline**                   | Das Bauen des Frontend, des Backend und der Datenbankanbindung werden mittels einer Pipeline automatisiert. Zudem sind die Tests unter anderem statische Codeanalyse, Lasttests und E2E-Tests mit mehreren Szenarien enthalten. |
 
-## Kontextabgrenzung {#section-system-scope-and-context}
+## Kontextabgrenzung
 
-### Fachlicher Kontext {#_fachlicher_kontext}
+### Fachlicher Kontext
 
 ![Kontextabgrenzung](images/Kontextabgrenzung.png)
 
@@ -97,7 +68,7 @@ der online-Dokumentation (auf Englisch!).
 | Frontend → Backend      | HTTP GET Anfrage  | JSON mit Pokémon-Daten |
 | Backend → Externe API   | Pokémon-Name      | JSON mit Pokémon-Daten |
 
-### Technischer Kontext {#_technischer_kontext}
+### Technischer Kontext
 
 ![UML Deployment Diagramm](images/UML_Deployment.png)
 
@@ -145,7 +116,7 @@ Externe API-Anfragen werden mit `RestTemplate` gesendet, welches in der `Config`
   - **Eingabe**: Pokémon-Name (als Pfadparameter)
   - **Ausgabe**: Pokémon-Daten im JSON-Format
 
-## Lösungsstrategie {#section-solution-strategy}
+## Lösungsstrategie
 
 ### Technologieentscheidungen
 Für das Backend wurde Spring Boot als Framework ausgewählt. Spring Boot bietet eine breite Palette an Features, die die Entwicklung von robusten und skalierbaren Anwendungen unterstützen. Es integriert sich nahtlos mit Container-Technologien wie Docker und ist ideal für Microservice-Architekturen geeignet, was den Anforderungen an Performance und Skalierbarkeit gerecht wird. Flutter wurde als Frontend-Framework gewählt, da es eine leistungsfähige Plattform für die Entwicklung moderner, reaktionsschneller Benutzeroberflächen bietet und eine konsistente Benutzererfahrung über verschiedene Geräte hinweg ermöglicht. PostgreSQL dient als Datenbank und wurde aufgrund seiner Zuverlässigkeit, Leistungsfähigkeit und Erweiterbarkeit ausgewählt. Die Datenbank wird als Cache für die Daten der externen PokeAPI genutzt. Zur Beschaffung von Pokémon-Informationen wird die PokeAPI v2 verwendet, da sie eine umfassende Datenquelle für die benötigten Informationen bietet.
@@ -167,9 +138,9 @@ Durch diese umfassenden Maßnahmen zur Sicherstellung von Performance, Usability
 ### organisatorische Entscheidungen
 Ein wesentlicher Bestandteil der organisatorischen Entscheidungen in diesem Projekt ist die Implementierung einer CI/CD-Pipeline mithilfe von GitHub Actions, um für eine hohe Qualität und Zuverlässigkeit des Codes zu sorgen. Diese Pipeline automatisiert den gesamten Prozess vom Code-Commit bis zur Bereitstellung und gewährleistet eine kontinuierliche Integration und Auslieferung neuer Funktionen und Verbesserungen. Bei jedem Push oder Pull-Request wird der Code automatisch gebaut und durch eine Reihe automatisierter Tests, einschließlich Unit-, Integrations- und End-to-End-Tests, geprüft. Zusätzlich werden Frontend-Tests durchgeführt, um sicherzustellen, dass die Benutzeroberfläche den Erwartungen entspricht. ArchUnit-Tests werden im Backend verwendet, um die Einhaltung von Architekturregeln zu überprüfen. Die Dockerfiles werden in der Pipeline gelintet, um sicherzustellen, dass sie syntaktisch korrekt und effizient geschrieben sind. SonarCloud ergänzt als statisches Code-Analyse-Tool die Tests, um sicherzustellen, dass der Code den Qualitätsstandards entspricht. Nach erfolgreichem Bestehen aller Tests werden Docker-Container erstellt und in einer Registry gespeichert. Diese Container können dann in die verschiedenen Umgebungen mithilfe der Docker-Compose-Datei bereitgestellt werden. Um die Leistungsfähigkeit und Stabilität der Anwendung unter hoher Last zu gewährleisten, werden zudem automatisierte Lasttests durchgeführt.
 
-## Bausteinsicht {#section-building-block-view}
+## Bausteinsicht
 
-### Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
+### Whitebox Gesamtsystem
 
 ![Whitebox](images/blockstein(1).png)
 
@@ -208,7 +179,7 @@ Ein wesentlicher Bestandteil der organisatorischen Entscheidungen in diesem Proj
 | PokemonResult      | StatelessWidget, zeigt die Ergebnisse der Pokémon-Suche an und ruft Daten vom Backend ab      |
 | PokemonData        | Datenklasse, die die Struktur der empfangenen Pokémon-Daten definiert |
 
-## Laufzeitsicht {#section-runtime-view}
+## Laufzeitsicht
 
 ### Szenario: Benutzer gibt Pokémon-Namen ein und erhält Daten von der API
 ![API-Call](images/API_call.png)
@@ -251,9 +222,9 @@ Ein wesentlicher Bestandteil der organisatorischen Entscheidungen in diesem Proj
 - Backend sendet die Fehlermeldung als HTTP-Antwort an das Frontend.
 - Frontend zeigt die erhaltene Fehlermeldung dem Benutzer an.
 
-## Verteilungssicht {#section-deployment-view}
+## Verteilungssicht
 
-### Infrastruktur {#_infrastruktur_ebene_1}
+### Infrastruktur
 
 ![Kontextabgrenzung](images/Verteilung.png)
 
@@ -277,11 +248,11 @@ Docker Compose wird verwendet, um die Konfiguration und Orchestrierung der versc
 - **Leistungsfähigkeit**: NGINX ermöglicht eine schnelle und effiziente Auslieferung des Frontends, während Spring Boot die robusten und skalierbaren Backend-Dienste bereitstellt.
 - **Einfache Orchestrierung**: Docker Compose ermöglicht eine einfache Verwaltung und Orchestrierung aller Container, was den Entwicklungs- und Bereitstellungsprozess erheblich vereinfacht.
 
-## Querschnittliche Konzepte {#section-concepts}
+## Querschnittliche Konzepte
 
 ![Kontextabgrenzung](images/u.png)
 
-## Architekturentscheidungen {#section-design-decisions}
+## Architekturentscheidungen
 
 ### Flutter
 Flutter wurde gewählt, weil es eine leistungsfähige Plattform für die Entwicklung moderner, reaktionsschneller Benutzeroberflächen bietet und eine konsistente Benutzererfahrung über verschiedene Geräte hinweg ermöglicht.
@@ -334,13 +305,13 @@ Die `integration_test`-Bibliothek von Flutter wurde gewählt, um End-to-End-Test
 | JUnit                              | 5                  |
 | Artillery                          | latest               |
 
-## Qualitätsanforderungen {#section-quality-scenarios}
+## Qualitätsanforderungen
 
-### Qualitätsbaum {#_qualit_tsbaum}
+### Qualitätsbaum
 
 ![Qualität](images/quali.png)
 
-### Qualitätsszenarien {#_qualit_tsszenarien}
+### Qualitätsszenarien
 
 # Qualitätsziele und Maßnahmen
 
@@ -360,7 +331,7 @@ Die `integration_test`-Bibliothek von Flutter wurde gewählt, um End-to-End-Test
 |                | Änderungsszenario: Neue Anforderungen erfordern Anpassungen und erneute Tests der Systemstabilität.      | Anpassung der Tests                           |
 
 
-## Risiken und technische Schulden {#section-technical-risks}
+## Risiken und technische Schulden
 
 # Technische Schulden und Maßnahmen
 
@@ -371,7 +342,7 @@ Die `integration_test`-Bibliothek von Flutter wurde gewählt, um End-to-End-Test
 | Keine Unit-Tests für das Frontend               | Es fehlen Unit-Tests für das Frontend, was zu einer geringeren Testabdeckung und möglichen Fehlern führen kann. | Einführung und Implementierung von Unit-Tests für das Frontend | Mittel     |
 | Abhängigkeit von externer API                   | Das System ist stark von der Verfügbarkeit und Zuverlässigkeit der externen PokeAPI abhängig.         | Einführung von Caching-Mechanismen, Implementierung von Fallback-Strategien und regelmäßigen Verfügbarkeitsprüfungen der API | Hoch      |
 
-## Glossar {#section-glossary}
+## Glossar
 
 # Glossar
 

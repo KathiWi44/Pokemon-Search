@@ -2,6 +2,7 @@
 FROM ubuntu:20.04 AS build
 
 ENV FLUTTER_VERSION="3.22.2"
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Set the working directory in the container
 WORKDIR /app

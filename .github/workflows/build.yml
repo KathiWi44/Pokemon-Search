@@ -60,6 +60,41 @@ jobs:
         run: cd PokeBackend && ./gradlew sonar
         continue-on-error: true
 
+        - name: Lint backend Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: PokeBackend/Dockerfile.jvm
+
+      - name: Lint frontend Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Poke_Frontend/Dockerfile-flutter
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push backend Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./PokeBackend
+          file: ./PokeBackend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/pokemon-backend:latest
+
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./Poke_Frontend
+          file: ./Poke_Frontend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/pokemon-frontend:latest
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -121,37 +156,4 @@ jobs:
         run: artillery run artillery.yml
         working-directory: PokeBackend
 
-      - name: Lint backend Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: PokeBackend/Dockerfile.jvm
-
-      - name: Lint frontend Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: Poke_Frontend/Dockerfile-flutter
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push backend Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./PokeBackend
-          file: ./PokeBackend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USER }}/pokemon-backend:latest
-
-      - name: Build and push frontend Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./Poke_Frontend
-          file: ./Poke_Frontend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USER }}/pokemon-frontend:latest
+      

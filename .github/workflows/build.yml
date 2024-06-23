@@ -78,11 +78,16 @@ jobs:
         run: ls integration_test/
         working-directory: Poke_Frontend
 
-      - name: Install Chromedriver
+      - name: Fetch Chrome version
+        id: chrome-version
+        run: google-chrome --version
+
+      - name: Install Matching Chromedriver
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget -N https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION -O chromedriver_version
+          CHROMEDRIVER_VERSION=$(cat chromedriver_version)
+          wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv -f chromedriver /usr/local/bin/chromedriver
           sudo chmod +x /usr/local/bin/chromedriver

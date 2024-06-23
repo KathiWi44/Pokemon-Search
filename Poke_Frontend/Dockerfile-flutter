@@ -1,23 +1,53 @@
-# Use an official Flutter image as a parent image
-FROM ubuntu:latest
+# Stage 1: Build the Flutter web app
+FROM ubuntu:latest AS build
+
+ENV FLUTTER_VERSION="3.22.2"
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Install necessary dependencies
 RUN apt-get update && \
-    apt-get install -y curl git unzip xz-utils zip libglu1-mesa && \
-    apt-get clean
+    apt-get install -y \
+    curl \
+    cmake \
+    git \
+    unzip \
+    xz-utils \
+    zip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up non-root user and grant permissions
+RUN groupadd -r webapp && useradd -r -g webapp -m -s /bin/bash testuser && \
+    mkdir -p /usr/local/lib/flutter && \
+    chown -R testuser:webapp /usr/local/lib/flutter
 
 # Install Flutter SDK
-RUN git clone https://github.com/flutter/flutter.git /flutter
-ENV PATH="/flutter/bin:${PATH}"
+USER testuser
+RUN git clone https://github.com/flutter/flutter.git /usr/local/lib/flutter && \
+    cd /usr/local/lib/flutter && \
+    git checkout $FLUTTER_VERSION
+
+# Set Git safe directory to avoid ownership issues
+RUN git config --global --add safe.directory /usr/local/lib/flutter
+
+# Update PATH environment variable
+ENV PATH="/usr/local/lib/flutter/bin:${PATH}"
 
 # Run basic Flutter doctor to initialize Flutter SDK
 RUN flutter doctor
 
+# Switch to root user to copy the project files
+USER root
+
 # Copy the Flutter project to the container
-COPY . .
+COPY . /app
+
+# Change ownership of the project files to testuser
+RUN chown -R testuser:webapp /app
+
+# Switch back to testuser to install dependencies and build the project
+USER testuser
 
 # Install dependencies
 RUN flutter pub get
@@ -25,11 +55,14 @@ RUN flutter pub get
 # Build the Flutter web application
 RUN flutter build web
 
+# Stage 2: Serve the Flutter web app using nginx
+FROM nginx:latest
+
+# Copy the build output from the first stage
+COPY --from=build /app/build/web /usr/share/nginx/html
+
 # Expose the port that the application runs on
-EXPOSE 8081
+EXPOSE 80
 
-# Run the Flutter web server
-CMD ["flutter", "run", "-d", "web", "-p", "8081"]
-
-# Run integration tests
-RUN flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart
+# Run nginx
+CMD ["nginx", "-g", "daemon off;"]

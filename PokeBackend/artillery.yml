@@ -1,0 +1,22 @@
+config:
+  target: "http://localhost:8080"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - name: "Get Pokemon"
+    flow:
+      - get:
+          url: "/pokemon"
+          headers:
+            Content-Type: "application/json"
+      - think: 2
+
+  - name: "Get example Pokemon"
+    flow:
+      - get:
+          url: "/pokemon/mew"
+          headers:
+            Content-Type: "application/json"
+      - think: 1

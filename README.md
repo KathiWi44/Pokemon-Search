@@ -337,6 +337,7 @@ Die `integration_test`-Bibliothek von Flutter wurde gewählt, um End-to-End-Test
 
 | Risiko/Technische Schuld                        | Beschreibung                                                                                           | Maßnahme zur Risikovermeidung/Risikominimierung/Abbau der technischen Schuld | Priorität |
 |-------------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|-----------|
+| Durchlauf der Pipeline        | Pipeline läuft aktuell nicht durch. | Richten der Pipeline. | Hoch      |
 | Umgang mit sensiblen Daten                      | Es muss sichergestellt werden, dass sensible Daten sicher gehandhabt werden, idealerweise mit Umgebungsvariablen. | Nutzung von Umgebungsvariablen für alle sensiblen Daten, Einführung von Sicherheitsrichtlinien und regelmäßigen Überprüfungen | Hoch      |
 | Keine Integrationstests für das Backend         | Es fehlen Integrationstests für das Backend, was zu unerkannten Fehlern bei der Interaktion der Komponenten führen kann. | Einführung und Implementierung von Integrationstests für das Backend | Hoch      |
 | Keine Unit-Tests für das Frontend               | Es fehlen Unit-Tests für das Frontend, was zu einer geringeren Testabdeckung und möglichen Fehlern führen kann. | Einführung und Implementierung von Unit-Tests für das Frontend | Mittel     |

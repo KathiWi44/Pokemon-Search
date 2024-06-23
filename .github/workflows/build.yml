@@ -77,31 +77,9 @@ jobs:
       - name: List integration tests
         run: ls integration_test/
         working-directory: Poke_Frontend
-
-      - name: Fetch Chrome version
-        id: get-chrome-version
-        run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
-          echo "CHROME_MAJOR_VERSION=$CHROME_MAJOR_VERSION" >> $GITHUB_ENV
-
-      - name: Install Matching Chromedriver
-        run: |
-          wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${{ env.CHROME_MAJOR_VERSION }} -O LATEST_RELEASE
-          CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
-          wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv -f chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
-          chromedriver --version
-
-      - name: Run Chromedriver
-        run: |
-          nohup chromedriver --port=4444 &
-          sleep 5
         
       - name: Run Flutter integration tests
-        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d web-server
+        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d linux
         working-directory: Poke_Frontend
         
       - name: Install Artillery

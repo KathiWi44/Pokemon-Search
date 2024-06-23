@@ -279,7 +279,7 @@ Docker Compose wird verwendet, um die Konfiguration und Orchestrierung der versc
 
 ## Querschnittliche Konzepte {#section-concepts}
 
-![Kontextabgrenzung](images/UML.png)
+![Kontextabgrenzung](images/u.png)
 
 ## Architekturentscheidungen {#section-design-decisions}
 

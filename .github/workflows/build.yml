@@ -82,7 +82,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget curl unzip xvfb libxi6 libgconf-2-4
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.63/linux64/chrome-linux64.zip
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
           google-chrome --version
 
@@ -106,9 +106,7 @@ jobs:
         env:
           DISPLAY: :99
         run: |
-          flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d web-server &
-          sleep 5
-          google-chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost:4444
+          flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d chrome
         
       - name: Install Artillery
         run: npm install -g artillery

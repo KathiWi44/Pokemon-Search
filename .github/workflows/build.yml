@@ -100,6 +100,11 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x16 &
           export DISPLAY=:99
           sleep 3
+
+      - name: Start Chromedriver
+        run: |
+          chromedriver --port=4444 &
+          sleep 5
         
       - name: Run Flutter integration tests
         working-directory: Poke_Frontend

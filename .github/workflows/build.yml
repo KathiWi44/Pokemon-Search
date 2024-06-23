@@ -80,7 +80,7 @@ jobs:
 
       - name: Fetch Chrome version
         id: chrome-version
-        run: google-chrome --version
+        run: echo "chrome_version=$(google-chrome --version | grep -oP '\d+')" >> $GITHUB_ENV
 
       - name: Install Matching Chromedriver
         run: |

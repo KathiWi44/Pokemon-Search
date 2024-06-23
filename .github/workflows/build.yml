@@ -78,10 +78,13 @@ jobs:
         run: ls integration_test/
         working-directory: Poke_Frontend
 
-      - name: Install Chromium
+      - name: Install Chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser
+          sudo apt-get install -y wget curl unzip xvfb libxi6 libgconf-2-4
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+          google-chrome --version
 
       - name: Start Xvfb
         run: |
@@ -93,8 +96,10 @@ jobs:
       - name: Run Flutter integration tests
         env:
           DISPLAY: :99
-        run:  flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d web-server
-        working-directory: Poke_Frontend
+        run: |
+          flutter drive --driver=test_driver/integration_test.dart --target=integration_test/poke_search_test.dart -d web-server &
+          sleep 5
+          google-chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost:4444
         
       - name: Install Artillery
         run: npm install -g artillery
